@@ -1,0 +1,36 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#conway {
+  width: 800px;
+  height: 500px;
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+}
+
+#conway div {
+
+}
+
+#conway div > div {
+  border: solid 1px lightgrey;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  float: left;
+}
+
+.alive {
+  background-color: blue;
+}

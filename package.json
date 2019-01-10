@@ -1,0 +1,25 @@
+{
+  "name": "expand",
+  "version": "1.0.0",
+  "description": "### Background and Overview",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trevor-shepard/expand.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trevor-shepard/expand/issues"
+  },
+  "homepage": "https://github.com/trevor-shepard/expand#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
+  }
+}
