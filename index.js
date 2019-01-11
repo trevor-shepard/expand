@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.grid = grid;
 
     grid.buildBoard(conway, patterns["pulsar"])
-    setInterval(grid.cycle, 50)
+    setInterval(grid.cycle, 100)
 
 })
 

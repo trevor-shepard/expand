@@ -4,6 +4,8 @@ html, body {
 }
 
 body {
+  background-image: url("background.jpg");
+  background-size: cover;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -18,10 +20,6 @@ body {
   margin: auto;
 }
 
-#conway div {
-
-}
-
 #conway div > div {
   border: solid 1px lightgrey;
   width: 20px;
@@ -31,9 +29,9 @@ body {
 }
 
 .visited {
-  background-color: antiquewhite;
+  background-color: #F0F0DF;
 }
 
 .alive {
-  background-color: blue;
+  background-color: #3F5866;
 }
