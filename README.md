@@ -16,7 +16,7 @@ On each level, users are given patterns of cells which they may implement on any
 
 In Expand, users will be able to:
 
-- [ ] Select cell patterns to implement on the board
+- [X] Select cell patterns to implement on the board
 - [ ] See a active count of how many cells they have left to visit to pass the level
 - [ ] See the set of cell patterns they are allowed to use on a given level
 - [ ] Start and Restart the level
@@ -59,21 +59,20 @@ In addition to the webpack entry file, there will be four scripts involved in th
 ### Implementation Timeline
 
 **Day 1**: 
-- [ ] Research javascript implementations of The Game of Life
-- [ ] Set up Webpack
-- [ ] Get `webpack` serving files and frame out index.html, index.js
+- [X] Research javascript implementations of The Game of Life
+- [X] Set up Webpack
+- [X] Get `webpack` serving files and frame out index.html, index.js
 
 **Day 2**: Set up canvas element and get cells to behave correctly:
-
-- [ ] Set up canvas element 
-- [ ] Start cell.js to handle logic of Game of Life cells
-- [ ] Get board to run with prepopulated cells
-- [ ] Make save "visited" squares
+ 
+- [X] Start cell.js to handle logic of Game of Life cells
+- [X] Get board to run with prepopulated cells
+- [X] Make save "visited" squares
 
 **Over the weekend**: Get the board to become clickable (add squares while board is running)
 
-- [ ] Make board clickable (add cell) while paused
-- [ ] Make board clickable (add cell) while running
+- [X] Make board clickable (add cell) while paused
+- [X] Make board clickable (add cell) while running
 - [ ] Build out collections
 - [ ] Add walls to levels
 - [ ] Add increased goal of visited to levels
