@@ -18,11 +18,11 @@ export default class Cell {
     createNode(x) {
         let newNode = document.createElement('div')
         newNode.classList.add(`c-${x}`)
-        if (this.alive) {
-            this.visited = true;
-            newNode.classList.add('alive')
-            newNode.classList.add('visited')
-        }
+        // if (this.alive) {
+        //     this.visited = true;
+        //     newNode.classList.add('alive')
+        //     newNode.classList.add('visited')
+        // }
         newNode.classList.add('cell')
         newNode.addEventListener('click', this.handleClick)
         this.el = newNode;
