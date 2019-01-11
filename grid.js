@@ -5,6 +5,7 @@ export default class Grid {
         this.grid = []
         this.width = width
         this.height = height
+        this.score = 0;
         
         // populate a grid to specfication size with "dead" and "unvisited" Cells
         for (let y = 0; y < height; y++) {
@@ -20,7 +21,6 @@ export default class Grid {
         this.cycle = this.cycle.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
-        this.score = 0;
     }
 
     // takes an arrray of tuples [x, y]
@@ -38,6 +38,7 @@ export default class Grid {
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
             this.grid[node[1]][node[0]].wake()
+            this.score += 1;
         })
 
         let scoreDiv = document.getElementById("score")
@@ -120,6 +121,7 @@ export default class Grid {
                 let el = divRow.getElementsByClassName(`c-${x}`)[0]
                 if (status)  {
                     this.wake(x, y)
+
                 } else {
                     this.kill(x, y)
                 }
