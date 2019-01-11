@@ -23,7 +23,7 @@ export default class Cell {
             newNode.classList.add('alive')
             newNode.classList.add('visited')
         }
-
+        newNode.classList.add('cell')
         newNode.addEventListener('click', this.handleClick)
         this.el = newNode;
         return newNode;

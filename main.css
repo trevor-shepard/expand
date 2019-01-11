@@ -4,8 +4,9 @@ html, body {
 }
 
 body {
-  background-image: url("background.jpg");
-  background-size: cover;
+  /* background-image: url("background.jpg");
+  background-size: cover; */
+  background: #114C44;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -28,10 +29,14 @@ body {
   float: left;
 }
 
+.cell {
+  background-color: #447F70;
+}
+
 .visited {
-  background-color: #F0F0DF;
+  background-color: #9CC2AF;
 }
 
 .alive {
-  background-color: #3F5866;
+  background-color: black;
 }

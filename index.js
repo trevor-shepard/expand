@@ -1,5 +1,5 @@
-import Grid from './grid';
-
+// import Grid from './grid';
+import Game from './game';
 
 const patterns = {
     "blinker": [[1, 0], [1, 1], [1, 2]],
@@ -11,14 +11,16 @@ const patterns = {
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    const conway = document.getElementById('conway')
+    // const conway = document.getElementById('conway')
 
-    let grid = new Grid(20, 20)
+    // let grid = new Grid(10, 4)
 
-    window.grid = grid;
+    // grid.buildBoard(conway, patterns["blinker"])
+    // setInterval(grid.cycle, 100)
+    let game = new Game();
+    game.run("pulsar", 15, 30)
 
-    grid.buildBoard(conway, patterns["pulsar"])
-    setInterval(grid.cycle, 100)
+
 
 })
 

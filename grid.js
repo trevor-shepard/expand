@@ -1,11 +1,12 @@
 import Cell from './cell'
 
 export default class Grid {
-    constructor(width, height){
+    constructor(width, height, goal = null){
         this.grid = []
         this.width = width
         this.height = height
         this.score = 0;
+        this.goal = goal ? goal : width * height
         
         // populate a grid to specfication size with "dead" and "unvisited" Cells
         for (let y = 0; y < height; y++) {
@@ -21,6 +22,11 @@ export default class Grid {
         this.cycle = this.cycle.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
+        this.isWon = this.isWon.bind(this);
+    }
+
+    isWon(){
+        return !(this.goal > this.score)
     }
 
     // takes an arrray of tuples [x, y]
