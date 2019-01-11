@@ -6,12 +6,23 @@ html, body {
 body {
   /* background-image: url("background.jpg");
   background-size: cover; */
-  background: #114C44;
+  background: #201148;
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #00ccfd;
+  font-family: 'Coiny', cursive;
+}
+
+.conway-container {
+  background-image:
+    radial-gradient(
+      circle,
+      #00ccfd,
+      #201148
+    );
 }
 
 #conway {
@@ -23,20 +34,31 @@ body {
 
 #conway div > div {
   border: solid 1px lightgrey;
-  width: 20px;
-  height: 20px;
   box-sizing: border-box;
   float: left;
+  border: 1px solid #2011a2;
 }
 
 .cell {
-  background-color: #447F70;
+  background-color: #00ccfd	;
+  width: 20px;
+  height: 20px;
+  margin: 2.5px;
+  -webkit-transition: background-color .5s
 }
+
 
 .visited {
-  background-color: #9CC2AF;
+  background-color: #ff34b3	;
 }
 
+.visited:hover {
+  width: 25px;
+  height: 25px;
+  margin: 0;
+}
+
+
 .alive {
-  background-color: black;
+  background-color: #2011a2;
 }

@@ -5,19 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Expand</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     
 </head>
 <body>
     <div>
         <h1>expand</h1>
-        <h4>try and cover all the squares</h4>
-        <h4>click on visited squares to cause your cells to cascade out into new territory</h4>
-        <h4>be careful! when you have no more active squares, your're done!</h4>
         <div>
             Your Score: <span id="score"></span>
         </div>
-        <div id="conway"></div>
+        <div class="conway-container">
+            <div id="conway"></div>
+        </div>
     </div>
 </body>
 <script src="./bundle.js"></script>

@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // grid.buildBoard(conway, patterns["blinker"])
     // setInterval(grid.cycle, 100)
     let game = new Game();
-    game.run("pulsar", 15, 30)
+    game.run("pulsar", 20, 40)
 
 
 

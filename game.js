@@ -26,7 +26,7 @@ export default class Game {
                 board.innerHTML = "whuuut, damn! i'm just so dang proud rn"
             }
         },
-         100)
+         150)
         
     }
 }
