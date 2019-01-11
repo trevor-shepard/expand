@@ -16,7 +16,7 @@ On each level, users are given patterns of cells which they may implement on any
 
 In Expand, users will be able to:
 
-- [ ] Select cell patterns to implement on the board
+- [X] Select cell patterns to implement on the board
 - [ ] See a active count of how many cells they have left to visit to pass the level
 - [ ] See the set of cell patterns they are allowed to use on a given level
 - [ ] Start and Restart the level
