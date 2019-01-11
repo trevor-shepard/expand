@@ -27,7 +27,7 @@ export default class Grid {
 
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
-            this.grid[node[0]][node[1]].wake()
+            this.grid[node[1]][node[0]].wake()
         })
 
         // iterate over nodes in grid and return a divs for rows with nested divs for nodes with approperate class names
@@ -55,6 +55,7 @@ export default class Grid {
     kill(x, y) {
         let cell = this.grid[y][x];
         cell.kill();
+        
     }
 
     
@@ -65,13 +66,14 @@ export default class Grid {
                 let neighborX = x + xDelta;
                 let neighborY = y + yDelta;
                 if (this.outOfBounds(neighborX, neighborY)) {return rowCount;}
-    
-                if (this.grid[neighborY][neighborX]) {
+                
+                if (this.grid[neighborY][neighborX].isAlive()) {
                     rowCount ++ ;
                 }
                 return rowCount;
             },
             0)
+            
             return count;
         },
         0);
@@ -111,11 +113,10 @@ export default class Grid {
     paintBoard(mirror) {
         mirror.forEach((mirrorRow, y) => {
             let divRow = document.getElementById(`r-${y}`)
-            console.log(divRow)
+           
             mirrorRow.forEach((status, x) => {
                 let el = divRow.getElementsByClassName(`c-${x}`)[0]
                 if (status)  {
-                    console.log(el)
                     this.wake(x, y)
                     el.classList.add('visited');
                     el.classList.add('alive');
@@ -133,7 +134,6 @@ export default class Grid {
     cycle() {
         let mirror = this.makeMirror();
         this.paintBoard(mirror)
-        console.log("cycle")
     }
 }
 

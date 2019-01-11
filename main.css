@@ -12,11 +12,10 @@ body {
 }
 
 #conway {
-  width: 800px;
-  height: 500px;
   display: flex;
   justify-items: center;
   flex-direction: column;
+  margin: auto;
 }
 
 #conway div {
@@ -25,10 +24,14 @@ body {
 
 #conway div > div {
   border: solid 1px lightgrey;
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   box-sizing: border-box;
   float: left;
+}
+
+.visited {
+  background-color: antiquewhite;
 }
 
 .alive {
