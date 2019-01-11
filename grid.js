@@ -20,6 +20,7 @@ export default class Grid {
         this.cycle = this.cycle.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
+        this.score = 0;
     }
 
     // takes an arrray of tuples [x, y]
@@ -34,16 +35,23 @@ export default class Grid {
             }
             parentDiv.append(newRow);
         }
-
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
             this.grid[node[1]][node[0]].wake()
         })
+
+        let scoreDiv = document.getElementById("score")
+        scoreDiv.innerText = this.score;
     }    
 
     wake(x, y) {
         let cell = this.grid[y][x];
+        if (!cell.visited) {
+            this.score += 1;
+        }
+        
         cell.wake();
+        
         
     }
 
@@ -122,5 +130,7 @@ export default class Grid {
     cycle() {
         let mirror = this.makeMirror();
         this.paintBoard(mirror)
+        let scoreDiv = document.getElementById("score")
+        scoreDiv.innerText = this.score;
     }
 }
