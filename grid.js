@@ -24,27 +24,22 @@ export default class Grid {
 
     // takes an arrray of tuples [x, y]
     buildBoard(parentDiv, liveNodes) {
-
-        // iterate over grid and wake given nodes
-        liveNodes.forEach((node) => {
-            this.grid[node[1]][node[0]].wake()
-        })
-
-        // iterate over nodes in grid and return a divs for rows with nested divs for nodes with approperate class names
         
+        // iterate over nodes in grid and return a divs for rows with nested divs for nodes with approperate class names
         for (let y = 0; y < this.height; y++)  {
             let newRow = document.createElement('div')
             newRow.id = `r-${y}`;
             for (let x = 0; x < this.width; x ++) {
                 newRow.append(this.grid[y][x].createNode(x))
             }
-
             parentDiv.append(newRow);
         }
 
-    
-    }
-    
+        // iterate over grid and wake given nodes
+        liveNodes.forEach((node) => {
+            this.grid[node[1]][node[0]].wake()
+        })
+    }    
 
     wake(x, y) {
         let cell = this.grid[y][x];
@@ -58,7 +53,6 @@ export default class Grid {
         
     }
 
-    
     countNeighbors(x, y) {
         return [-1, 0, 1].reduce((count, yDelta) => {
             count += [-1, 0, 1].reduce((rowCount, xDelta) => {
@@ -82,7 +76,7 @@ export default class Grid {
     outOfBounds(x, y) {
         return x < 0 || x >= this.width || y < 0 || y >= this.height;
     }
-    
+
     makeMirror() {
         // mirror array to hold values for next cycle
         let mirror = []
@@ -118,52 +112,15 @@ export default class Grid {
                 let el = divRow.getElementsByClassName(`c-${x}`)[0]
                 if (status)  {
                     this.wake(x, y)
-                    el.classList.add('visited');
-                    el.classList.add('alive');
                 } else {
                     this.kill(x, y)
-                    el.classList.remove('alive');
                 }
             })
         });
     }
-
-
-
 
     cycle() {
         let mirror = this.makeMirror();
         this.paintBoard(mirror)
     }
 }
-
-
-// test case for countNeighbors
-// const a = [
-//     [0, 0, 1],
-//     [1, 0, 1],
-//     [0, 0, 1]
-// ]
-
-// const outOfBounds = (x, y) => {
-//     return x < 0 || x >= 3 || y < 0 || y >= 3
-// }
-
-// const countTest = (array, x, y) => {
-//     return [-1, 0, 1].reduce((count, yDelta) => {
-//         count += [-1, 0, 1].reduce((rowCount, xDelta) => {
-//             if (xDelta === 0 && yDelta === 0) {return rowCount;}
-//             let neighborX = x + xDelta;
-//             let neighborY = y + yDelta;
-//             if (outOfBounds(neighborX, neighborY)) {return rowCount;}
-
-//             if (array[neighborY][neighborX]) {
-//                 rowCount ++ ;
-//             }
-//             return rowCount;
-//         },
-//         0)
-//         return count;
-//     },
-//     0);
-// };

@@ -1,17 +1,17 @@
-
 export default class Cell {
     constructor(x, y, alive = false) {
         this.x = x;
         this.y = y;
         this.alive = alive;
         this.visited = false;
-        this.el
+        this.el;
 
         
         this.isAlive = this.isAlive.bind(this);
         this.createNode = this.createNode.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     // takes booleen value
@@ -24,18 +24,29 @@ export default class Cell {
             newNode.classList.add('visited')
         }
 
-        newNode.addEventListener('click', this.wake)
-
+        newNode.addEventListener('click', this.handleClick)
+        this.el = newNode;
         return newNode;
+    }
+
+    handleClick() {
+        if (this.visited) {
+            this.wake();
+        } 
     }
 
     wake() {
         this.alive = true;
         this.visited = true;
+        this.el.classList.add('visited');
+        this.el.classList.add('alive');
+        
     }
 
     kill() {
         this.alive = false;
+        this.el.classList.remove('alive');
+
     }
 
     isAlive() {
