@@ -1,28 +1,36 @@
 import Cell from './cell'
 
 export default class Grid {
-    constructor(width, height, goal = null){
+    constructor(width, height, clickLimit, goal = null){
         this.grid = []
         this.width = width
         this.height = height
         this.score = 0;
         this.goal = goal ? goal : width * height
+        this.clickLimit = clickLimit;
+        this.clickCount = 0;
         
         // populate a grid to specfication size with "dead" and "unvisited" Cells
         for (let y = 0; y < height; y++) {
             let row = []
             for (let x = 0; x < width; x++) {
-                row.push(new Cell(x, y)) 
+                
+                row.push(new Cell(x, y, this)) 
             }
             this.grid.push(row)
         }
-        this.buildBoard = this.buildBoard.bind(this);
-        this.makeMirror = this.makeMirror.bind(this);
-        this.countNeighbors = this.countNeighbors.bind(this);
+        // this.buildBoard = this.buildBoard.bind(this);
+        // this.makeMirror = this.makeMirror.bind(this);
+        // this.countNeighbors = this.countNeighbors.bind(this);
         this.cycle = this.cycle.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
         this.isWon = this.isWon.bind(this);
+
+    }
+
+    isLost(){
+        return(this.clickCount > this.clickLimit)
     }
 
     isWon(){
@@ -138,7 +146,11 @@ export default class Grid {
     cycle() {
         let mirror = this.makeMirror();
         this.paintBoard(mirror)
+        
         let scoreDiv = document.getElementById("score")
         scoreDiv.innerText = this.score;
+
+        let clickDiv = document.getElementById("clicks")
+        clickDiv.innerText =  this.clickLimit - this.clickCount
     }
 }

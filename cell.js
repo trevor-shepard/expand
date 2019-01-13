@@ -1,7 +1,8 @@
 export default class Cell {
-    constructor(x, y, alive = false) {
+    constructor(x, y, gird, alive = false) {
         this.x = x;
         this.y = y;
+        this.grid = gird;
         this.alive = alive;
         this.visited = false;
         this.el;
@@ -32,6 +33,7 @@ export default class Cell {
     handleClick() {
         if (this.visited) {
             this.wake();
+            this.grid.clickCount += 1;
         } 
     }
 

@@ -10,17 +10,15 @@ const patterns = {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // const conway = document.getElementById('conway')
-
-    // let grid = new Grid(10, 4)
-
-    // grid.buildBoard(conway, patterns["blinker"])
-    // setInterval(grid.cycle, 100)
     let game = new Game();
-    game.run("pulsar", 20, 40)
+    game.run("glider-right-down", 20, 25)
 
-
+    let reset = document.getElementById('reset')
+    let handleReset = () => {
+        game.end()
+        game.run("glider-right-down", 20, 25)
+    }
+    reset.addEventListener('click', handleReset)
 
 })
 
