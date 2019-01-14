@@ -18,9 +18,6 @@ export default class Grid {
             }
             this.grid.push(row)
         }
-        // this.buildBoard = this.buildBoard.bind(this);
-        // this.makeMirror = this.makeMirror.bind(this);
-        // this.countNeighbors = this.countNeighbors.bind(this);
         this.cycle = this.cycle.bind(this);
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
@@ -33,7 +30,9 @@ export default class Grid {
             return true
         }
 
-        if (this.grid.some((node) => ( node.isAlive() ))) {
+        if (this.grid.some((row) => (
+            row.some((node) => node.alive )
+         ))) {
             return false
         } else {
             return true
