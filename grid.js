@@ -1,12 +1,11 @@
 import Cell from './cell'
 
 export default class Grid {
-    constructor(width, height, clickLimit, goal = null){
+    constructor(width, height, clickLimit){
         this.grid = []
         this.width = width
         this.height = height
-        this.score = 0;
-        this.goal = goal ? goal : width * height
+        this.score = width * height;
         this.clickLimit = clickLimit;
         this.clickCount = 0;
         
@@ -30,11 +29,19 @@ export default class Grid {
     }
 
     isLost(){
-        return(this.clickCount > this.clickLimit)
+        if (this.clickCount === this.clickLimit) {
+            return true
+        }
+
+        if (this.grid.some((node) => ( node.isAlive() ))) {
+            return false
+        } else {
+            return true
+        }
     }
 
     isWon(){
-        return !(this.goal > this.score)
+        return this.score === 0;
     }
 
     // takes an arrray of tuples [x, y]
@@ -52,7 +59,7 @@ export default class Grid {
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
             this.grid[node[1]][node[0]].wake()
-            this.score += 1;
+            this.score -= 1;
         })
 
         let scoreDiv = document.getElementById("score")
@@ -62,7 +69,7 @@ export default class Grid {
     wake(x, y) {
         let cell = this.grid[y][x];
         if (!cell.visited) {
-            this.score += 1;
+            this.score -= 1;
         }
         
         cell.wake();

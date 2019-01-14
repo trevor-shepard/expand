@@ -33,7 +33,7 @@ export default class Game {
         let level = this.levels[levelNum]
         this.mountReset(level)
 
-        this.run(...level)
+        this.run(level)
 
     }
 
@@ -43,7 +43,7 @@ export default class Game {
 
         let handleReset = () => {
             this.end()
-            this.run(...level)
+            this.run(level)
         }
         reset.addEventListener('click', handleReset)
 
@@ -53,33 +53,35 @@ export default class Game {
         let next = document.getElementById('next')
         next.disabled = false;
 
-        let nextLevel = this.levels[this.currentLevel + 1]
+        let nextLevel = this.levels[this.currentLevel + 1];
 
         let handleNext = () => {
             this.end()
-            this.currentLevel += 1
-            this.run(...nextLevel)
+            this.currentLevel += 1;
+            this.run(nextLevel);
+            this.mountReset(nextLevel);
         }
         next.addEventListener('click', handleNext)
 
     }
 
 
-    run(pattern, height, width, clicks = 20) {
+    run(level) {
         const board = document.getElementById('conway')
 
         board.innerHTML = "";
 
         // debugger
-        let grid = new Grid(width, height, clicks);
+        let grid = new Grid(level[1], level[2], level[3]);
 
-        grid.buildBoard(board, this.patterns[pattern])
+        grid.buildBoard(board, this.patterns[level[0]])
         this.running = setInterval(()  =>{
             grid.cycle()
             if (grid.isWon()) {
                 this.end()
                 this.levelsCompleted += 1;
                 this.mountNext()
+                
                 board.innerHTML = "whuuut, damn! i'm just so dang proud rn"
 
             }
@@ -88,7 +90,7 @@ export default class Game {
                 board.innerHTML = "d00d u zuk"
             }
         },
-         100)
+        100);
     }
 
     end() {
