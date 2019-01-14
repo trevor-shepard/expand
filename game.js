@@ -11,7 +11,9 @@ export default class Game {
         }
 
         this.levels = {
-            0: ["blinker", 10, 10, 10]
+            0: ["blinker", 4, 4, 5],
+            1: ['toad', 10, 10, 10],
+            2: ['beacon', 8, 8, 4]
         }
 
         this.levelsCompleted = 0;
@@ -49,6 +51,16 @@ export default class Game {
 
     mountNext() {
         let next = document.getElementById('next')
+        next.disabled = false;
+
+        let nextLevel = this.levels[this.currentLevel + 1]
+
+        let handleNext = () => {
+            this.end()
+            this.currentLevel += 1
+            this.run(...nextLevel)
+        }
+        next.addEventListener('click', handleNext)
 
     }
 
@@ -66,7 +78,10 @@ export default class Game {
             grid.cycle()
             if (grid.isWon()) {
                 this.end()
+                this.levelsCompleted += 1;
+                this.mountNext()
                 board.innerHTML = "whuuut, damn! i'm just so dang proud rn"
+
             }
             if (grid.isLost()){
                 this.end()
