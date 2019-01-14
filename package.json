@@ -18,8 +18,7 @@
     "url": "https://github.com/trevor-shepard/expand/issues"
   },
   "homepage": "https://github.com/trevor-shepard/expand#readme",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
   }
