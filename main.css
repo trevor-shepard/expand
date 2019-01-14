@@ -17,6 +17,9 @@ body {
 }
 
 .conway-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   background-image:
     radial-gradient(
       circle,

@@ -6,6 +6,7 @@ export default class Cell {
         this.alive = alive;
         this.visited = false;
         this.el;
+        this.clicked = false;
 
         
         this.isAlive = this.isAlive.bind(this);
@@ -15,15 +16,9 @@ export default class Cell {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    // takes booleen value
     createNode(x) {
         let newNode = document.createElement('div')
         newNode.classList.add(`c-${x}`)
-        // if (this.alive) {
-        //     this.visited = true;
-        //     newNode.classList.add('alive')
-        //     newNode.classList.add('visited')
-        // }
         newNode.classList.add('cell')
         newNode.addEventListener('click', this.handleClick)
         this.el = newNode;
@@ -31,10 +26,13 @@ export default class Cell {
     }
 
     handleClick() {
-        if (this.visited) {
+        if (this.visited && this.alive) {
+            this.clicked = true
+        } else if (this.visited) {
             this.wake();
             this.grid.clickCount += 1;
-        } 
+        }
+        
     }
 
     wake() {

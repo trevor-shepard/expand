@@ -111,17 +111,21 @@ export default class Grid {
                 let cell = this.grid[y][x]
                 let count = this.countNeighbors(x, y)
                 let alive = cell.isAlive()
-
                 // Determine the alive status of cell at next cycle
-                if (alive && (count < 2 || count > 3)) {
-                    row.push(false)
+                if (cell.clicked === true) {
+                    if (!cell.alive) {
+                        this.clickCount += 1;
+                    }
+                    row.push(true);
+                } else if (alive && (count < 2 || count > 3)) {
+                    row.push(false);
                 } else if (!alive && count === 3) {
-                    row.push(true)
+                    row.push(true);
                 } else {
-                    row.push(alive)
+                    row.push(alive);
                 }
             }
-            mirror.push(row)
+            mirror.push(row);
         }
         return mirror;
     }

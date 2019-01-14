@@ -11,14 +11,6 @@ const patterns = {
 
 document.addEventListener("DOMContentLoaded", () => {
     let game = new Game();
-    game.run("glider-right-down", 20, 25)
-
-    let reset = document.getElementById('reset')
-    let handleReset = () => {
-        game.end()
-        game.run("glider-right-down", 20, 25)
-    }
-    reset.addEventListener('click', handleReset)
-
+    game.start()
 })
 
