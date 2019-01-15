@@ -79,10 +79,10 @@ body {
 }
 
 .message {
-  z-index: 2;
+  z-index: 1;
   position: absolute;
-  left: 45%;
-  top: 11%;
+  left: -10%;
+  top: 60%;
   font-family: 'Lobster', cursive;
   font-size: 50px;
   color: #FFB513;
