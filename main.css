@@ -74,30 +74,10 @@ body {
   background-color: #2011a2;
 }
 
-.winner {
-  color: #ff34b3;
-  height: 80px;
-  width: 200px;
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.loser {
-  color: #201148;
-  height: 80px;
-  width: 200px;
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .absolute {
   position: relative;
 }
+
 .message {
   z-index: 2;
   position: absolute;
@@ -106,16 +86,71 @@ body {
   font-family: 'Lobster', cursive;
   font-size: 50px;
   color: #FFB513;
-
 }
-
-
 
 .hidden {
   transform: scale(0, 0);
 }
 
+
+
 .show-message {
   transform: scale(1, 1);
   transition: 200ms;
 }
+
+.button {
+  font-family: 'Roboto Slab', serif;
+  margin: 7px;
+
+}
+
+#explaination-modal {
+  transition: all .2s ease-in-out;
+  position: absolute;
+  z-index: 5;
+  height: auto;
+  width: auto;
+  background-color: #5F3994;
+  padding: 20px;
+  border: 2px solid;
+  border-radius: 30px;
+  width: 48%;
+}
+
+#explaination-modal h2 {
+  color: #FFB513;
+  font-size: 30px;
+  margin-bottom: 0;
+}
+#explaination-modal h4 {
+  color: #FFB513;
+  font-size: 22px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+#explaination-modal p {
+  font-size: 18px;
+  margin: 11px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  margin: 13px;
+}
+
+#play-button {
+  height: 53px;
+  width: 100px;
+  margin: 12px;
+  margin-right: 103px;
+  font-family: 'Lobster', cursive;
+  font-size: 28px;
+  background: #FFB513;
+  border-radius: 16px;
+  padding-bottom: 7px;
+  outline: none;
+}
+

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     
 </head>
@@ -19,8 +20,10 @@
             <h2>Lose</h2>
     </div>
     <div>
-        <button id='reset'>Reset</button>
-        <button id='next' disabled>Next</button>
+        <button id='reset' class="button">Reset</button>
+        <button id='next' disabled class="button">Next</button>
+    </div>
+    <div>
         Clicks Remaining: <span id="clicks"></span>
         Squares Remaining: <span id="score"></span> 
     </div>
@@ -28,6 +31,26 @@
         <div class="conway-container">
             <div id="conway"></div>
         </div>
+    </div>
+    <div id="explaination-modal">
+        <div class="title">
+            <h2>welcome to expand</h3>
+            <button id="play-button">play</button>
+        </div>
+        <p>
+            expand accross the board, visiting each cell
+        </p>
+        <p> be careful to keep your nodes alive, if you run out of nodes or if you run out, you also lose </p>
+        <h4>directions</h4>
+        <p>add new nodes to the grid to cascade your nodes over the board. only pink squares can be selected</p>
+        <h4>a little about this game</h4>
+
+        <p>nodes in expand are cellular auomatons, governed by rules of Conway's Game of Life also known as simply as Life, they were devised by british mathematician John Horton Conway in 19870 </p>
+        <p>cells live or die based upon 4 principles</p>
+        <p>1. Any live cell with fewer than two live neighbors dies</p>
+        <p>2. Any live cell with two or three live neighbors lives</p>
+        <p>3. Any live cell with more than three live neighbors dies</p>
+        <p>4. Any dead cell with exactly three live neighbors becomes a live cell,</p>
     </div>
 </body>
 <script src="./bundle.js"></script>
