@@ -17,6 +17,7 @@ body {
 }
 
 .conway-container {
+  color: #2011a2;
   display: flex;
   justify-content: center;
   flex-direction: column;

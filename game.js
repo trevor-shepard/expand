@@ -49,6 +49,11 @@ export default class Game {
 
     }
 
+    disableNext() {
+        let next = document.getElementById('next')
+        next.disabled = true;
+    }
+
     mountNext() {
         let next = document.getElementById('next')
         next.disabled = false;
@@ -56,10 +61,12 @@ export default class Game {
         let nextLevel = this.levels[this.currentLevel + 1];
 
         let handleNext = () => {
+            
             this.end()
             this.currentLevel += 1;
             this.run(nextLevel);
             this.mountReset(nextLevel);
+            this.disableNext();
         }
         next.addEventListener('click', handleNext)
 
@@ -82,12 +89,12 @@ export default class Game {
                 this.levelsCompleted += 1;
                 this.mountNext()
                 
-                board.innerHTML = "whuuut, damn! i'm just so dang proud rn"
+                board.innerHTML = "YOU WIN";
 
             }
             if (grid.isLost()){
                 this.end()
-                board.innerHTML = "d00d u zuk"
+                board.innerHTML = "TRY AGAIN";
             }
         },
         100);
