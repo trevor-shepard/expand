@@ -91,13 +91,20 @@ export default class Game {
                 this.end()
                 this.levelsCompleted += 1;
                 this.mountNext()
-                
-                board.innerHTML = "YOU WIN";
+                let winDiv = document.createElement('div')
+                winDiv.classList += 'winner';
+                winDiv.innerText = "YOU WIN";
+                board.innerHTML = "";
+                board.append(winDiv);
 
             }
             if (grid.isLost()){
                 this.end()
-                board.innerHTML = "TRY AGAIN";
+                let loserDiv = document.createElement('div')
+                loserDiv.classList += 'loser'
+                loserDiv.innerText = "TRY AGAIN";
+                board.innerHTML = "";
+                board.append(loserDiv);
             }
         },
         100);

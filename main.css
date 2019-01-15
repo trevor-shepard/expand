@@ -12,6 +12,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   color: #00ccfd;
   font-family: 'Coiny', cursive;
 }
@@ -66,3 +67,25 @@ body {
 .alive {
   background-color: #2011a2;
 }
+
+.winner {
+  color: #ff34b3;
+  height: 80px;
+  width: 200px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loser {
+  color: #201148;
+  height: 80px;
+  width: 200px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} 
