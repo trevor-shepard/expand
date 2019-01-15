@@ -91,6 +91,7 @@ body {
   position: absolute;
   left: 50%;
   margin-left: -50px;
+  text-shadow: -2px 0 #2011a2, 0 2px #2011a2, 2px 0 #2011a2, 0 -2px #2011a2;
 }
 
 .bigger-board {
