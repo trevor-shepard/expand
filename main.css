@@ -15,6 +15,7 @@ body {
   flex-direction: column;
   color: #00ccfd;
   font-family: 'Coiny', cursive;
+  position: relative;
 }
 
 .conway-container {
@@ -42,25 +43,30 @@ body {
   box-sizing: border-box;
   float: left;
   border: 1px solid #2011a2;
+  border-radius: 8px;
 }
 
 .cell {
   background-color: #00ccfd	;
   width: 20px;
   height: 20px;
-  margin: 2.5px;
+  margin: 3px;
   -webkit-transition: background-color .25s
 }
 
 
 .visited {
   background-color: #ff34b3	;
+  transition: all .2s ease-in-out;
 }
 
 .visited:hover {
+  
   width: 25px;
   height: 25px;
-  margin: 0;
+  margin: .5px;
+
+  transform: scale(1.1)
 }
 
 
@@ -76,7 +82,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .loser {
@@ -88,4 +93,29 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-} 
+}
+
+.absolute {
+  position: relative;
+}
+.message {
+  z-index: 2;
+  position: absolute;
+  left: 45%;
+  top: 11%;
+  font-family: 'Lobster', cursive;
+  font-size: 50px;
+  color: #FFB513;
+
+}
+
+
+
+.hidden {
+  transform: scale(0, 0);
+}
+
+.show-message {
+  transform: scale(1, 1);
+  transition: 200ms;
+}

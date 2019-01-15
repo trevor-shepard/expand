@@ -45,6 +45,8 @@ export default class Game {
 
 
         let handleReset = () => {
+            let loseDiv = document.getElementById('lose')
+            loseDiv.classList.remove("show-message")
             this.end()
             this.run(level)
         }
@@ -64,7 +66,8 @@ export default class Game {
         let nextLevel = this.levels[this.currentLevel + 1];
 
         let handleNext = () => {
-            
+            let winDiv = document.getElementById('win')
+            winDiv.classList.remove("show-message")
             this.end()
             this.currentLevel += 1;
             this.run(nextLevel);
@@ -91,20 +94,13 @@ export default class Game {
                 this.end()
                 this.levelsCompleted += 1;
                 this.mountNext()
-                let winDiv = document.createElement('div')
-                winDiv.classList += 'winner';
-                winDiv.innerText = "YOU WIN";
-                board.innerHTML = "";
-                board.append(winDiv);
-
+                let winDiv = document.getElementById('win')
+                winDiv.classList.toggle("show-message")
             }
             if (grid.isLost()){
                 this.end()
-                let loserDiv = document.createElement('div')
-                loserDiv.classList += 'loser'
-                loserDiv.innerText = "TRY AGAIN";
-                board.innerHTML = "";
-                board.append(loserDiv);
+                let loseDiv = document.getElementById('lose')
+                loseDiv.classList.toggle("show-message")
             }
         },
         100);
