@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   color: #00ccfd;
   font-family: 'Coiny', cursive;
-  position: relative;
+  /* position: relative; */
 }
 
 .conway-container {
@@ -29,6 +29,7 @@ body {
       #00ccfd,
       #201148
     );
+  position: relative;
 }
 
 #conway {
@@ -36,6 +37,7 @@ body {
   justify-items: center;
   flex-direction: column;
   margin: auto;
+  
 }
 
 #conway div > div {
@@ -74,18 +76,25 @@ body {
   background-color: #2011a2;
 }
 
-.absolute {
-  position: relative;
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .message {
-  z-index: 1;
-  position: absolute;
-  left: -10%;
-  top: 60%;
+  z-index: 2;
   font-family: 'Lobster', cursive;
   font-size: 50px;
   color: #FFB513;
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+}
+
+.bigger-board {
+  left: 50%
 }
 
 .hidden {
