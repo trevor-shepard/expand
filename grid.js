@@ -123,6 +123,7 @@ export default class Grid {
                         this.clickCount += 1;
                     }
                     row.push(true);
+                    cell.clicked = false;
                 } else if (alive && (count < 2 || count > 3)) {
                     row.push(false);
                 } else if (!alive && count === 3) {
