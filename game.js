@@ -13,7 +13,7 @@ export default class Game {
         this.levels = {
             0: ["blinker", 4, 4, 5],
             1: ['toad', 5, 5, 7],
-            2: ['beacon', 20, 15, 30],
+            2: ['beacon', 13, 10, 30],
             3: ['glider-right-down', 25, 20, 25],
             4: ['beacon', 30, 30, 20],
             5: ['pulsar', 30, 20, 20] 
@@ -74,7 +74,10 @@ export default class Game {
             this.mountReset(nextLevel);
             this.disableNext();
         }
-        next.addEventListener('click', handleNext)
+
+        let new_next = next.cloneNode(true);
+        new_next.addEventListener('click', handleNext)
+        next.parentNode.replaceChild(new_next, next);
 
     }
 

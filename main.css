@@ -125,6 +125,7 @@ body {
   border: 2px solid;
   border-radius: 30px;
   width: 48%;
+  overflow: scroll;
 }
 
 #explaination-modal h2 {
