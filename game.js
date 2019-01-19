@@ -11,12 +11,12 @@ export default class Game {
         }
 
         this.levels = {
-            0: ["blinker", 4, 4, 5],
+            0: ["blinker", 3, 3, 5],
             1: ['toad', 5, 5, 7],
             2: ['beacon', 13, 10, 30],
-            3: ['glider-right-down', 25, 20, 25],
-            4: ['beacon', 30, 30, 20],
-            5: ['pulsar', 30, 20, 20] 
+            3: ['glider-right-down', 15, 15, 25],
+            4: ['pulsar', 20, 20, 20],
+            5: ['beacon', 20, 20, 13],
         }
 
         this.levelsCompleted = 0;
