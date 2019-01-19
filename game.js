@@ -11,7 +11,7 @@ export default class Game {
         }
 
         this.levels = {
-            0: ["blinker", 3, 3, 5],
+            0: ["blinker", 4, 4, 5],
             1: ['toad', 5, 5, 7],
             2: ['beacon', 13, 10, 30],
             3: ['glider-right-down', 15, 15, 25],
