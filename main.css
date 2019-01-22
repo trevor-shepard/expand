@@ -19,10 +19,11 @@ body {
 }
 
 .conway-container {
-  color: #2011a2;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #2011a2;
   background-image:
     radial-gradient(
       circle,
@@ -68,13 +69,6 @@ body {
 
 .alive {
   background-color: #2011a2;
-}
-
-.flex {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .message {
