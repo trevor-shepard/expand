@@ -39,15 +39,12 @@ body {
   margin: auto;
 }
 
-#conway div > div {
+.cell {
   border: solid 1px lightgrey;
   box-sizing: border-box;
   float: left;
   border: 1px solid #2011a2;
   border-radius: 8px;
-}
-
-.cell {
   background-color: #00ccfd;
   width: 20px;
   height: 20px;

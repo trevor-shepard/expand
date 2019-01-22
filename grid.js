@@ -50,6 +50,7 @@ export default class Grid {
         for (let y = 0; y < this.height; y++)  {
             let newRow = document.createElement('div')
             newRow.id = `r-${y}`;
+            newRow.classList.add("row")
             for (let x = 0; x < this.width; x ++) {
                 newRow.append(this.grid[y][x].createNode(x))
             }
