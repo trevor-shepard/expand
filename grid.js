@@ -1,4 +1,5 @@
 import Cell from './cell'
+import CssRule from './AdjustCss'
 
 export default class Grid {
     constructor(width, height, clickLimit){
@@ -22,7 +23,7 @@ export default class Grid {
         this.wake = this.wake.bind(this);
         this.kill = this.kill.bind(this);
         this.isWon = this.isWon.bind(this);
-
+        this.adjustCSS = this.adjustCSS.bind(this);
     }
 
     isLost(){
@@ -56,15 +57,40 @@ export default class Grid {
             }
             parentDiv.append(newRow);
         }
+
+        
+        
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
             this.grid[node[1]][node[0]].wake()
             this.score -= 1;
         })
-
+        
+        this.adjustCSS()
         let scoreDiv = document.getElementById("score")
         scoreDiv.innerText = this.score;
-    }    
+    }
+
+    adjustCSS() {
+        let cellWidth = 90.0 / this.width;
+        let cellHeight = 90.0 / this.height;
+        let cellStyle = new CssRule('main');
+        let cellMargin;
+        if (this.width > this.height) {
+            let totalMargin = 95 - (cellWidth * this.width)
+            cellMargin = totalMargin/ this.width;
+        } else {
+            let totalMargin = 95 - (cellHeight * this.height);
+            cellMargin = totalMargin / this.height;
+        }
+        console.log(cellMargin)
+        cellStyle.adjust('.row', "height", `${cellHeight}%`);
+        cellStyle.adjust('.cell', "width", `${cellWidth}%`);
+        cellStyle.adjust('.cell', 'margin', `${cellMargin}%`);
+    }
+
+
+
 
     wake(x, y) {
         let cell = this.grid[y][x];

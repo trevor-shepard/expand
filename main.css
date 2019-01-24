@@ -23,6 +23,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  
+}
+
+#conway {
   color: #2011a2;
   background-image:
     radial-gradient(
@@ -30,14 +35,12 @@ body {
       #00ccfd,
       #201148
     );
-  position: relative;
-}
-
-#conway {
   display: flex;
-  justify-items: center;
+  justify-content: space-around;
   flex-direction: column;
   margin: auto;
+  width: 65vh;
+  height: 60vh;
 }
 
 .cell {
@@ -47,12 +50,14 @@ body {
   border: 1px solid #2011a2;
   border-radius: 8px;
   background-color: #00ccfd;
-  width: 20px;
-  height: 20px;
-  margin: 3px;
+  height: 90%;
+  margin: .5%;
   -webkit-transition: background-color .25s
 }
 
+.row{
+
+}
 
 .visited {
   background-color: #ff34b3	;
@@ -60,9 +65,7 @@ body {
 }
 
 .visited:hover {
-  width: 25px;
-  height: 25px;
-  margin: .5px;
+  color: pink;
   transform: scale(1.1)
 }
 
@@ -116,6 +119,12 @@ body {
   border-radius: 30px;
   width: 48%;
   overflow: scroll;
+  -ms-overflow-style: none;  
+  overflow: -moz-scrollbars-none; 
+}
+
+#explaination-modal::-webkit-scrollbar { 
+  display: none; 
 }
 
 #explaination-modal h2 {
