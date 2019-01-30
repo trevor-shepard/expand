@@ -11,7 +11,7 @@ export default class CssRule  {
     }
 
     adjust(cssIdentifyer, changeStyle, changeValue) {
-        debugger
+        
         for (let rule of this.styleSheet.rules) {
             if (rule.selectorText === cssIdentifyer) {
                 rule.style[changeStyle] = changeValue;

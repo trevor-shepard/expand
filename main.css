@@ -77,12 +77,13 @@ body {
 .message {
   z-index: 2;
   font-family: 'Lobster', cursive;
-  font-size: 50px;
+  font-size: 160px;
   color: #FFB513;
+  top: 19%;
   position: absolute;
   left: 50%;
-  margin-left: -50px;
-  text-shadow: -2px 0 #2011a2, 0 2px #2011a2, 2px 0 #2011a2, 0 -2px #2011a2;
+  margin-left: -130px;
+  text-shadow: -2px 0 #2011a2, 0 9px #2011a2, 2px 0 #2011a2, 0 -2px #2011a2;
 }
 
 .bigger-board {
@@ -92,7 +93,6 @@ body {
 .hidden {
   transform: scale(0, 0);
 }
-
 
 
 .show-message {
@@ -107,7 +107,7 @@ body {
 }
 
 #explaination-modal {
-  color: #73FD9E;
+  color: black;
   transition: all .2s ease-in-out;
   position: absolute;
   z-index: 5;
@@ -184,3 +184,4 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
