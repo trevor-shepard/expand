@@ -222,3 +222,46 @@ h1 {
   font-size: 60px;
   margin-bottom: 0;
 }
+
+@media only screen and (max-device-width: 480px) {
+  #conway {
+    width: 85vw;
+  }
+  #explaination-modal {
+    width: 85vw;
+  }
+
+  #instructions {
+    position: absolute;
+    left: 61%;
+    top: 3%;
+    margin: 0;
+  }
+
+  #gif {
+    position: relative;
+    background-image: url(./media/expand.gif);
+    background-size: cover;
+    height: 255px;
+    width: 284px;
+    border: 3px solid #FFB513;
+    border-radius: 6px;
+    left: auto;
+    top: auto;
+  }
+  .directions-text {
+    width: 100%;
+  }
+
+  #play-button {
+    height: 53px;
+    width: 100px;
+    font-family: 'Lobster', cursive;
+    font-size: 28px;
+    background: #FFB513;
+    border-radius: 16px;
+    outline: none;
+    margin-left: 35%;
+  }
+  
+}

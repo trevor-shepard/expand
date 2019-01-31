@@ -35,14 +35,11 @@ export default class Game {
     start(levelNum = 0) {
         let level = this.levels[levelNum]
         this.mountReset(level)
-
         this.run(level)
-
     }
 
     mountReset(level) {
         let reset = document.getElementById('reset')
-
 
         let handleReset = () => {
             let loseDiv = document.getElementById('lose')
@@ -50,12 +47,10 @@ export default class Game {
             let winDiv = document.getElementById('win')
             winDiv.classList.remove("show-message")
 
-
             this.end()
             this.run(level)
         }
         reset.addEventListener('click', handleReset)
-
     }
 
     disableNext() {
@@ -85,7 +80,7 @@ export default class Game {
 
     }
 
-
+    // takes array [<pattern>, <width>, <height>, <clicks>]
     run(level) {
         const board = document.getElementById('conway')
 
