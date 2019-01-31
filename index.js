@@ -20,3 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     game.start()
 })
+
+var http = require("http");
+setInterval(function() {
+    http.get("http://conway-expand.herokuapp.com");
+}, 300)
