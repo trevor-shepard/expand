@@ -57,8 +57,6 @@ export default class Grid {
             }
             parentDiv.append(newRow);
         }
-
-        
         
         // iterate over grid and wake given nodes
         liveNodes.forEach((node) => {
@@ -88,9 +86,6 @@ export default class Grid {
         cellStyle.adjust('.cell', "width", `${cellWidth}%`);
         cellStyle.adjust('.cell', 'margin', `${cellMargin}%`);
     }
-
-
-
 
     wake(x, y) {
         let cell = this.grid[y][x];

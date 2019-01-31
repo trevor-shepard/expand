@@ -1,98 +1,87 @@
-## Expand - An game of quick thinking
+<h1 align="center">
+  <a href="https://conway-expand.herokuapp.com/">expand</a>
+</h1>
 
-### Background and Overview
+<h4 align="center">A lightwight game built with vanilla javascript.</h4>
 
-Expand fun interactive game has users use Conway's Game of Life nodes to take over a world... before its too late!
-
-The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
-
-Cells lifecycle is goverened by four principles, that govern whether or not an automoton will be "alive" in the next lifecyle based upon the "alive" status of its neighbor cells  
-
-On each level, users are given patterns of cells which they may implement on any "visited" cell. Users must visit a certin number of spaces on the board before its too late!
-
-
-
-### Functionality & MVP  
-
-In Expand, users will be able to:
-
-- [X] Select cell patterns to implement on the board
-- [ ] See a active count of how many cells they have left to visit to pass the level
-- [ ] See the set of cell patterns they are allowed to use on a given level
-- [ ] Start and Restart the level
-- [ ] Go to previous levels, or next level if level is completed
-- [ ] Be able to mute game sounds
-
-In addition, this project will include:
-
-- [ ] An About modal describing the basic functionality
-- [ ] A Details modal delving into the specific implementation of The Game of Life
-
-### Wireframes
-
-This app will consist of a single screen with the simulation canvas, playback controls, a list of available patterns, and nav links to the Github, my LinkedIn, and the About and Details about The Game of Life.  
-
-The simulation canvas will include a dropdown for selecting the initial color of the creation object.
-
-Playback controls along the top will include Start and Restart.
-
-![wireframes](./wire.png)
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#related">Related</a> •
+  <a href="#license">License</a>
+</p>
 
 
-### Architecture and Technologies
+## Key Features
 
-This project will be implemented with the following technologies:
+* Implementation of [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) using OOP principles
+    - Cell Class contains instance variables to maintain positin, live status, and visited status
+    - Grid Class initializes to specified width and height
+    - Grid Class handles lifecycle logic of cycling board to next generation of cells
+    ```javascript
+        countNeighbors(x, y) {
+        return [-1, 0, 1].reduce((count, yDelta) => {
+            count += [-1, 0, 1].reduce((rowCount, xDelta) => {
+                if (xDelta === 0 && yDelta === 0) {return rowCount;}
+                let neighborX = x + xDelta;
+                let neighborY = y + yDelta;
+                if (this.outOfBounds(neighborX, neighborY)) {return rowCount;}
+                
+                if (this.grid[neighborY][neighborX].isAlive()) {
+                    rowCount ++ ;
+                }
+                return rowCount;
+            },
+            0)
+            
+            return count;
+        },
+        0);
+    }
+    ```
+* Game class holds multiple levels, which initializes specific grid sizes, starting patterns, and number of allowed clicks 
+* Dynamic Sizing of diffrent sized boards handled by hand written CssRule class
+    - Css dynamically adjusted using CSS Adjustor written from scratch
+     ```javascript
+        export default class CssRule  {
+            constructor(sheetName) {
+                this.styleSheet
+                for (let styleSheet of document.styleSheets) {
+                    if (styleSheet.href.includes(sheetName)) {
+                        this.styleSheet = styleSheet
+                    }
+                }       
+                this.adjust = this.adjust.bind(this)
+            }
 
-- Vanilla JavaScript for overall structure and game logic,
-- `HTML5 Canvas` for DOM manipulation and rendering,
-- Webpack to bundle and serve up the various scripts.
+            adjust(cssIdentifyer, changeStyle, changeValue) {
+                
+                for (let rule of this.styleSheet.rules) {
+                    if (rule.selectorText === cssIdentifyer) {
+                        rule.style[changeStyle] = changeValue;
+                    }
+                }
+            }
+        }
+    ```
 
-In addition to the webpack entry file, there will be four scripts involved in this project:
+## How To Use
 
-`board.js`: this script will handle the logic for creating and updating the necessary DOM elements.
+Navigate to the [live website](https://conway-expand.herokuapp.com/) or clone this repo, npm install, and run webpack.
 
-`cell.js`: this script will house the physics logic for the cells.
+```bash
+# Clone this repository
+$ git clone https://github.com/trevor-shepard/expand
 
-`audio.js`: this script will handle the audio logic for when a user puts a cell pattern on the board.
+# Go into the repository
+$ cd expand
 
+# Install dependencies
+$ npm install
 
-### Implementation Timeline
+# Run webpack
+$ npm run dev
 
-**Day 1**: 
-- [X] Research javascript implementations of The Game of Life
-- [X] Set up Webpack
-- [X] Get `webpack` serving files and frame out index.html, index.js
-
-**Day 2**: Set up canvas element and get cells to behave correctly:
- 
-- [X] Start cell.js to handle logic of Game of Life cells
-- [X] Get board to run with prepopulated cells
-- [X] Make save "visited" squares
-
-**Over the weekend**: Get the board to become clickable (add squares while board is running)
-
-- [X] Make board clickable (add cell) while paused
-- [X] Make board clickable (add cell) while running
-- [ ] Build out collections
-- [ ] Add walls to levels
-- [ ] Add increased goal of visited to levels
-
-**Day 3**: Let Player add collections to board while running. Goals for the day:
-
-- [ ] Let player select from pool of collections
-- [ ] Add desired collection to board while running
-- [ ] Have a functional screen on the `Canvas` frontend that correctly handles creation and running of the simulation.
-- [ ] Make sure that starting, and resetting works.
-
-**Day 4**: Polish. Goals for the day:
-
-- [ ] Add sound
-- [ ] Add drop down modal explaning rules on load
-- [ ] Have a styled `Canvas`, nice looking controls and title
-
-### Bonus features
-
-There are many directions in which this project could evolve.
-
-- [ ] Add malicious cells
-- [ ] Add diffrent types of cells that are either more resistant or multiply faster`
+# Run express server
+$ node server.js
+```
