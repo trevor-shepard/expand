@@ -4,14 +4,6 @@
 
 <h4 align="center">A lightwight game built with vanilla javascript.</h4>
 
-<p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#related">Related</a> •
-  <a href="#license">License</a>
-</p>
-
-
 ## Key Features
 
 * Implementation of [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) using OOP principles
