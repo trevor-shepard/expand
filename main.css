@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   color: #00ccfd;
   font-family: 'Coiny', cursive;
-  /* position: relative; */
+  position: relative;
 }
 
 .conway-container {
@@ -111,9 +111,9 @@ body {
   transition: all .2s ease-in-out;
   position: absolute;
   z-index: 5;
-  height: 90vh;
-  width: auto;
-  background-color: #5F3994;
+  min-height: 80vh;
+  max-height: 90vh;
+  background-color: #713CFF;
   padding: 20px;
   border: 2px solid;
   border-radius: 30px;
@@ -122,6 +122,7 @@ body {
   -ms-overflow-style: none;  
   overflow: -moz-scrollbars-none; 
 }
+
 
 #explaination-modal::-webkit-scrollbar { 
   display: none; 
@@ -142,11 +143,13 @@ body {
 #explaination-modal p {
   font-size: 18px;
   margin: 11px;
+  font-family: 'Lato', sans-serif;
+
 }
 
 .title {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 13px;
   margin-top: 0px;
 }
@@ -154,14 +157,12 @@ body {
 #play-button {
   height: 53px;
   width: 100px;
-  margin: 12px;
-  margin-right: 103px;
   font-family: 'Lobster', cursive;
   font-size: 28px;
   background: #FFB513;
   border-radius: 16px;
-  padding-bottom: 7px;
   outline: none;
+  margin-left: 45%; 
 }
 
 .dark-blue {
@@ -178,10 +179,32 @@ body {
 
 a {
   text-decoration: none;
-  color: #E8117E;
+  color: #FFB513;
+  
 }
 
 a:hover {
   text-decoration: underline;
 }
 
+#instructions {
+  position: absolute;
+  left: 90%;
+  top: 10%;
+}
+
+#gif {
+  position: absolute;
+  background-image: url(./expand.gif);
+  background-size: cover;
+  height: 255px;
+  width: 265px;
+  border: 4px solid #FFB513;
+  border-radius: 6px;
+  left: 58%;
+  top: 18%;
+}
+
+.directions-text {
+  width: 57%;
+}

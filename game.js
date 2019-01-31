@@ -11,9 +11,9 @@ export default class Game {
         }
 
         this.levels = {
-            1: ["blinker", 4, 4, 5],
+            0: ["blinker", 4, 4, 5],
             2: ['toad', 5, 10, 7],
-            0: ['beacon', 8, 8, 30],
+            1: ['beacon', 8, 8, 30],
             3: ['glider-right-down', 12, 12, 25],
             4: ['pulsar', 20, 20, 20],
             5: ['beacon', 20, 20, 13],
@@ -47,6 +47,10 @@ export default class Game {
         let handleReset = () => {
             let loseDiv = document.getElementById('lose')
             loseDiv.classList.remove("show-message")
+            let winDiv = document.getElementById('win')
+            winDiv.classList.remove("show-message")
+
+
             this.end()
             this.run(level)
         }

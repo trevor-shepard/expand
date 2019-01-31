@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Expand</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Coiny|Lato|Lobster|Roboto+Slab" rel="stylesheet">
     <link rel="stylesheet" href="main.css" />
     
 </head>
@@ -36,25 +34,28 @@
     </div>
     
     <div id="explaination-modal">
+        <div id="gif"></div>
         <div class="title">
             <h2>welcome to expand</h3>
-            <button id="play-button">play</button>
+            
         </div>
-        <p>
-            a expansion game of logic and chaos
-        </p>
-        <h4>directions</h4>
-        <p>click on <span class="pink">visited &#9608;</span> to cascade your <span class="dark-blue">alive &#9608;</span>   across the board. </p>
-        <p>you win when all <span class="light-blue">unvisited &#9608;</span> turn into <span class="pink">visited &#9608;</span></p>
-        <p>be careful! you lose if you run out of <span class="dark-blue">alive &#9608;</span> nodes or clicks  </p>
+        
+        <div class="directions-text">
+            <p>click on <span class="pink">visited &#9608;</span> to cascade your <span class="dark-blue">alive &#9608;</span>   across the board. </p>
+            <p>you win when all <span class="light-blue">unvisited &#9608;</span> turn into <span class="pink">visited &#9608;</span></p>
+            <p>be careful! you lose if you run out of <span class="dark-blue">alive &#9608;</span> nodes or clicks  </p>
+        </div>
         <h4>a little about this game</h4>
-        <p>nodes cellular auomatons, governed by rules of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a> also known as simply as Life, they were devised by british mathematician John Horton Conway in 1970 </p>
+        <p class="directions-text">nodes cellular auomatons, governed by rules of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a> also known as simply as Life, they were devised by british mathematician John Horton Conway in 1970 </p>
         <p>cells live or die based upon 4 principles</p>
         <p>1. Any live cell with fewer than two live neighbors dies</p>
         <p>2. Any live cell with two or three live neighbors lives</p>
         <p>3. Any live cell with more than three live neighbors dies</p>
         <p>4. Any dead cell with exactly three live neighbors becomes a live cell,</p>
+        <button id="play-button">play</button>
     </div>
+    <button id="instructions" class="hidden">Instructions</button>
+
 </body>
 <script src="./bundle.js"></script>
 
