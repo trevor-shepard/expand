@@ -113,9 +113,9 @@ body {
   z-index: 5;
   min-height: 80vh;
   max-height: 90vh;
-  background-color: #713CFF;
+  background-color: #9470FF;
   padding: 20px;
-  border: 2px solid;
+  border: 2px solid #FFB513;
   border-radius: 30px;
   width: 48%;
   overflow: scroll;
@@ -162,7 +162,7 @@ body {
   background: #FFB513;
   border-radius: 16px;
   outline: none;
-  margin-left: 45%; 
+  margin-left: 45%;
 }
 
 .dark-blue {
@@ -189,7 +189,7 @@ a:hover {
 
 #instructions {
   position: absolute;
-  left: 90%;
+  left: 36%;
   top: 10%;
 }
 
@@ -198,8 +198,8 @@ a:hover {
   background-image: url(./expand.gif);
   background-size: cover;
   height: 255px;
-  width: 265px;
-  border: 4px solid #FFB513;
+  width: 284px;
+  border: 3px solid #FFB513;
   border-radius: 6px;
   left: 58%;
   top: 18%;
@@ -207,4 +207,18 @@ a:hover {
 
 .directions-text {
   width: 57%;
+}
+
+button {
+  font-family: 'Lobster', cursive;
+  font-size: 28px;
+  background: #FFB513;
+  border-radius: 16px;
+  outline: none;
+  margin-left: 45%;
+}
+
+h1 {
+  font-size: 60px;
+  margin-bottom: 0;
 }
