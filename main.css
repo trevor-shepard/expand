@@ -195,7 +195,7 @@ a:hover {
 
 #gif {
   position: absolute;
-  background-image: url(./expand.gif);
+  background-image: url(./media/expand.gif);
   background-size: cover;
   height: 255px;
   width: 284px;
