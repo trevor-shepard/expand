@@ -1,4 +1,9 @@
 node_modules/
-bundle.js
-bundle.js.map
-DS_Store
+dist/
+apps/web/dist/
+apps/server/dist/
+packages/*/dist/
+.DS_Store
+*.log
+.env
+.env.*

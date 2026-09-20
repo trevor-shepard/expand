@@ -1,79 +1,45 @@
-<h1 align="center">
-  <a href="https://conway-expand.herokuapp.com/">expand</a>
-</h1>
+# expand
 
-<h4 align="center">A lightwight game built with vanilla javascript.</h4>
+Conway's Game of Life puzzle — visit every cell before you run out of clicks or live cells.
 
-## Key Features
+## Stack (Phase 0/1)
 
-* Implementation of [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) using OOP principles
-    - Cell Class contains instance variables to maintain positin, live status, and visited status
-    - Grid Class initializes to specified width and height
-    - Grid Class handles lifecycle logic of cycling board to next generation of cells
-    ```javascript
-        countNeighbors(x, y) {
-        return [-1, 0, 1].reduce((count, yDelta) => {
-            count += [-1, 0, 1].reduce((rowCount, xDelta) => {
-                if (xDelta === 0 && yDelta === 0) {return rowCount;}
-                let neighborX = x + xDelta;
-                let neighborY = y + yDelta;
-                if (this.outOfBounds(neighborX, neighborY)) {return rowCount;}
-                
-                if (this.grid[neighborY][neighborX].isAlive()) {
-                    rowCount ++ ;
-                }
-                return rowCount;
-            },
-            0)
-            
-            return count;
-        },
-        0);
-    }
-    ```
-* Game class holds multiple levels, which initializes specific grid sizes, starting patterns, and number of allowed clicks 
-* Dynamic Sizing of diffrent sized boards handled by hand written CssRule class
-    - Css dynamically adjusted using CSS Adjustor written from scratch
-     ```javascript
-        export default class CssRule  {
-            constructor(sheetName) {
-                this.styleSheet
-                for (let styleSheet of document.styleSheets) {
-                    if (styleSheet.href.includes(sheetName)) {
-                        this.styleSheet = styleSheet
-                    }
-                }       
-                this.adjust = this.adjust.bind(this)
-            }
+- **Web:** Vite + React + TypeScript (mobile-first)
+- **API:** Fastify (`GET /api/v1/levels`)
+- **Shared:** Zod level contracts + legacy starter fixtures
+- **Game engine:** pure TypeScript (DOM-free), characterization-tested
+- **Database:** Drizzle schema prepared under `db/` (PostgreSQL persistence lands in Phase 2)
 
-            adjust(cssIdentifyer, changeStyle, changeValue) {
-                
-                for (let rule of this.styleSheet.rules) {
-                    if (rule.selectorText === cssIdentifyer) {
-                        rule.style[changeStyle] = changeValue;
-                    }
-                }
-            }
-        }
-    ```
+## Development
 
-## How To Use
-
-Navigate to the [live website](https://conway-expand.herokuapp.com/) or clone this repo, npm install, and run webpack.
+Requirements: Node 20+.
 
 ```bash
-# Clone this repository
-$ git clone https://github.com/trevor-shepard/expand
-
-# Go into the repository
-$ cd expand
-
-# Install dependencies
-$ npm install
-
-# Run webpack
-$ npm run dev
-
-# Run express server
-$ node server.js
+npm install
+npm run dev
 ```
+
+- Game UI: http://localhost:5173
+- API: http://localhost:8080
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Vite + Fastify with API proxy |
+| `npm run build` | Build contracts, engine, web, and server |
+| `npm start` | Run production server (serves `apps/web/dist`) |
+| `npm test` | Vitest (contracts, engine, API service) |
+| `npm run typecheck` | TypeScript across workspaces |
+
+## Environment
+
+| Variable | Purpose |
+|---|---|
+| `PORT` | API/static server port (default `8080`) |
+| `NODE_ENV` | `production` enables static file serving |
+| `DATABASE_URL` | Reserved for Phase 2 Drizzle migrations |
+
+## Legacy note
+
+The 2019 Webpack 4 + Express + Heroku keep-alive client has been removed. Level content is validated fixture data served by Fastify until PostgreSQL seeding is added.

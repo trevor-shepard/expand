@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@expand/contracts": ["../../packages/contracts/dist/index.d.ts"],
+      "@expand/game-engine": ["../../packages/game-engine/dist/index.d.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}
