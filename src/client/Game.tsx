@@ -1,7 +1,9 @@
 import {
   type CSSProperties,
+  type RefObject,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 
@@ -28,6 +30,8 @@ export function Game({
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [game, setGame] = useState(() => createGameState(levels[0]));
   const [instructionsOpen, setInstructionsOpen] = useState(true);
+  const instructionsButtonRef = useRef<HTMLButtonElement>(null);
+  const startButtonRef = useRef<HTMLButtonElement>(null);
 
   const nextLevelIndex = useMemo(
     () => getNextLevelIndex(currentLevelIndex, levels.length),
@@ -45,6 +49,18 @@ export function Game({
 
     return () => window.clearInterval(timer);
   }, [game.outcome, instructionsOpen, tickInterval]);
+
+  useEffect(() => {
+    if (instructionsOpen) {
+      startButtonRef.current?.focus();
+    } else {
+      instructionsButtonRef.current?.focus();
+    }
+  }, [instructionsOpen]);
+
+  const closeInstructions = () => {
+    setInstructionsOpen(false);
+  };
 
   const reset = () => {
     setGame(createGameState(levels[currentLevelIndex]));
@@ -69,7 +85,10 @@ export function Game({
 
   return (
     <main className="game-shell">
-      <header className="game-header">
+      <header
+        className="game-header"
+        inert={instructionsOpen ? true : undefined}
+      >
         <div>
           <p className="eyebrow">
             Level {currentLevelIndex + 1} of {levels.length}
@@ -77,6 +96,7 @@ export function Game({
           <h1>expand</h1>
         </div>
         <button
+          ref={instructionsButtonRef}
           className="quiet-button"
           type="button"
           onClick={() => setInstructionsOpen(true)}
@@ -85,7 +105,11 @@ export function Game({
         </button>
       </header>
 
-      <section className="level-heading" aria-labelledby="level-title">
+      <section
+        className="level-heading"
+        aria-labelledby="level-title"
+        inert={instructionsOpen ? true : undefined}
+      >
         <div>
           <h2 id="level-title">{game.level.title}</h2>
           <p>{game.level.description}</p>
@@ -95,7 +119,11 @@ export function Game({
         </p>
       </section>
 
-      <section className="stats" aria-label="Game status">
+      <section
+        className="stats"
+        aria-label="Game status"
+        inert={instructionsOpen ? true : undefined}
+      >
         <div>
           <span>Clicks left</span>
           <strong>{remainingClicks}</strong>
@@ -106,7 +134,10 @@ export function Game({
         </div>
       </section>
 
-      <div className="board-wrap">
+      <div
+        className="board-wrap"
+        inert={instructionsOpen ? true : undefined}
+      >
         <div
           className="game-board"
           style={boardStyle}
@@ -157,7 +188,10 @@ export function Game({
         ) : null}
       </div>
 
-      <div className="game-actions">
+      <div
+        className="game-actions"
+        inert={instructionsOpen ? true : undefined}
+      >
         <button className="secondary-button" type="button" onClick={reset}>
           Reset level
         </button>
@@ -174,13 +208,19 @@ export function Game({
       </div>
 
       {instructionsOpen ? (
-        <Instructions onClose={() => setInstructionsOpen(false)} />
+        <Instructions buttonRef={startButtonRef} onClose={closeInstructions} />
       ) : null}
     </main>
   );
 }
 
-function Instructions({ onClose }: { onClose: () => void }) {
+function Instructions({
+  buttonRef,
+  onClose,
+}: {
+  buttonRef: RefObject<HTMLButtonElement | null>;
+  onClose: () => void;
+}) {
   return (
     <div className="modal-backdrop">
       <section
@@ -213,7 +253,12 @@ function Instructions({ onClose }: { onClose: () => void }) {
           Tap a pink square to wake it and spend a click. Tap a living square
           to keep it alive through the next generation without spending one.
         </p>
-        <button className="primary-button full-width" type="button" onClick={onClose}>
+        <button
+          ref={buttonRef}
+          className="primary-button full-width"
+          type="button"
+          onClick={onClose}
+        >
           Start playing
         </button>
       </section>
