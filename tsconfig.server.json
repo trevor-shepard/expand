@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "rootDir": "src",
+    "outDir": "server-dist",
+    "noEmit": false,
+    "declaration": false,
+    "isolatedModules": false
+  },
+  "include": ["src/db/**/*.ts", "src/server/**/*.ts", "src/shared/**/*.ts"],
+  "exclude": ["**/*.test.ts"]
+}

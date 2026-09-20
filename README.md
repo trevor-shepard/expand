@@ -1,79 +1,62 @@
-<h1 align="center">
-  <a href="https://conway-expand.herokuapp.com/">expand</a>
-</h1>
+# expand
 
-<h4 align="center">A lightwight game built with vanilla javascript.</h4>
+A mobile-first Conway's Game of Life puzzle. Reach every square before life
+ends or the click budget runs out.
 
-## Key Features
+## Modernization foundation
 
-* Implementation of [Conways Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) using OOP principles
-    - Cell Class contains instance variables to maintain positin, live status, and visited status
-    - Grid Class initializes to specified width and height
-    - Grid Class handles lifecycle logic of cycling board to next generation of cells
-    ```javascript
-        countNeighbors(x, y) {
-        return [-1, 0, 1].reduce((count, yDelta) => {
-            count += [-1, 0, 1].reduce((rowCount, xDelta) => {
-                if (xDelta === 0 && yDelta === 0) {return rowCount;}
-                let neighborX = x + xDelta;
-                let neighborY = y + yDelta;
-                if (this.outOfBounds(neighborX, neighborY)) {return rowCount;}
-                
-                if (this.grid[neighborY][neighborX].isAlive()) {
-                    rowCount ++ ;
-                }
-                return rowCount;
-            },
-            0)
-            
-            return count;
-        },
-        0);
-    }
-    ```
-* Game class holds multiple levels, which initializes specific grid sizes, starting patterns, and number of allowed clicks 
-* Dynamic Sizing of diffrent sized boards handled by hand written CssRule class
-    - Css dynamically adjusted using CSS Adjustor written from scratch
-     ```javascript
-        export default class CssRule  {
-            constructor(sheetName) {
-                this.styleSheet
-                for (let styleSheet of document.styleSheets) {
-                    if (styleSheet.href.includes(sheetName)) {
-                        this.styleSheet = styleSheet
-                    }
-                }       
-                this.adjust = this.adjust.bind(this)
-            }
+The current Phase 0/1 slice uses:
 
-            adjust(cssIdentifyer, changeStyle, changeValue) {
-                
-                for (let rule of this.styleSheet.rules) {
-                    if (rule.selectorText === cssIdentifyer) {
-                        rule.style[changeStyle] = changeValue;
-                    }
-                }
-            }
-        }
-    ```
+- Vite, React, and TypeScript for the public game.
+- A pure, DOM-independent Conway engine with characterization tests.
+- Fastify for the same-origin HTTP server and `GET /api/v1/levels`.
+- Shared Zod contracts for fixture, API, and client validation.
+- A validated copy of the six legacy levels as the temporary API source.
+- A Drizzle PostgreSQL schema ready for a later persistence migration.
 
-## How To Use
+Database connections, migrations, authentication, and the admin editor are
+deliberately deferred. The fixture repository implements the boundary that a
+future Drizzle repository will replace.
 
-Navigate to the [live website](https://conway-expand.herokuapp.com/) or clone this repo, npm install, and run webpack.
+## Local development
+
+Node 22 or newer is required.
 
 ```bash
-# Clone this repository
-$ git clone https://github.com/trevor-shepard/expand
-
-# Go into the repository
-$ cd expand
-
-# Install dependencies
-$ npm install
-
-# Run webpack
-$ npm run dev
-
-# Run express server
-$ node server.js
+npm install
+npm run dev
 ```
+
+Vite runs at `http://localhost:5173` and proxies `/api` to Fastify at
+`http://localhost:3001`.
+
+## Quality gates
+
+```bash
+npm run typecheck
+npm test
+npm run build
+npm start
+```
+
+`npm start` serves the built SPA and API from one Fastify process.
+
+## Source layout
+
+```text
+src/
+  client/             React game and mobile-first styles
+  domain/game/        Pure Conway and player-action state transitions
+  server/             Fastify app and fixture repository
+  shared/             Zod contracts and validated legacy levels
+  db/schema.ts        Drizzle-ready PostgreSQL model (not connected yet)
+```
+
+## Preserved gameplay rules
+
+- Initial and generated live cells count as visited.
+- Unvisited cells ignore player input.
+- Waking a visited dead cell spends one click immediately.
+- Forcing a visited live cell through the next generation is free.
+- Winning means every square has been visited.
+- A win takes precedence when win and loss happen in the same generation.
