@@ -88,7 +88,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(this.requireLevel(id));
   }
 
-  async create(input: LevelInput, _actor: string): Promise<AdminLevel> {
+  async create(input: LevelInput): Promise<AdminLevel> {
     const parsed = levelInputSchema.parse(input);
     this.ensureSlugAvailable(parsed.slug);
     const timestamp = this.now().toISOString();
@@ -106,7 +106,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(level);
   }
 
-  async update(id: string, input: LevelInput, _actor: string): Promise<AdminLevel> {
+  async update(id: string, input: LevelInput): Promise<AdminLevel> {
     const current = this.requireLevel(id);
     const parsed = levelInputSchema.parse(input);
     this.ensureSlugAvailable(parsed.slug, id);
@@ -120,7 +120,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(updated);
   }
 
-  async publish(id: string, _actor: string): Promise<AdminLevel> {
+  async publish(id: string): Promise<AdminLevel> {
     const current = this.requireLevel(id);
     if (current.status === "published") return cloneLevel(current);
     const positions = [...this.levels.values()]
@@ -139,7 +139,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(updated);
   }
 
-  async unpublish(id: string, _actor: string): Promise<AdminLevel> {
+  async unpublish(id: string): Promise<AdminLevel> {
     const current = this.requireLevel(id);
     if (current.status !== "published") return cloneLevel(current);
     const updated = adminLevelSchema.parse({
@@ -155,7 +155,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(updated);
   }
 
-  async archive(id: string, _actor: string): Promise<AdminLevel> {
+  async archive(id: string): Promise<AdminLevel> {
     const current = this.requireLevel(id);
     if (current.status === "archived") return cloneLevel(current);
     const updated = adminLevelSchema.parse({
@@ -171,7 +171,7 @@ export class FixtureLevelRepository implements LevelRepository {
     return cloneLevel(updated);
   }
 
-  async reorder(levelIds: string[], _actor: string): Promise<AdminLevel[]> {
+  async reorder(levelIds: string[]): Promise<AdminLevel[]> {
     const published = [...this.levels.values()]
       .filter((level) => level.status === "published");
     const expectedIds = new Set(published.map((level) => level.id));
