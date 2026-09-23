@@ -7,20 +7,12 @@ on:
       - cursor/modern-shell-a104
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: ${{ github.ref == 'refs/heads/master' && 'github-pages' || 'github-pages-preview' }}
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -46,14 +38,28 @@ jobs:
           VITE_BASE_PATH: /expand/
           VITE_STATIC_LEVELS: "true"
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Upload Pages build artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 1
+
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Pages build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
           path: apps/web/dist
 
-      - name: Deploy site
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: apps/web/dist
