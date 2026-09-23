@@ -95,13 +95,15 @@ function LoginPage() {
 }
 
 function RequireAdmin() {
-  const [state, setState] = useState<"checking" | "allowed" | "denied">(
-    "checking",
-  );
+  const [state, setState] = useState<
+    "checking" | "allowed" | "denied" | "error"
+  >("checking");
+  const [attempt, setAttempt] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
     let active = true;
+    setState("checking");
     void checkSession()
       .then(() => {
         if (active) setState("allowed");
@@ -111,14 +113,14 @@ function RequireAdmin() {
           setState(
             error instanceof AdminApiError && error.status === 401
               ? "denied"
-              : "denied",
+              : "error",
           );
         }
       });
     return () => {
       active = false;
     };
-  }, []);
+  }, [attempt]);
 
   if (state === "checking") {
     return (
@@ -136,6 +138,21 @@ function RequireAdmin() {
         replace
         state={{ from: location.pathname }}
       />
+    );
+  }
+  if (state === "error") {
+    return (
+      <main className="admin-route-status" role="alert">
+        <strong>Unable to open the level studio</strong>
+        <span>The session check failed. Check the connection and try again.</span>
+        <button
+          type="button"
+          className="button-link"
+          onClick={() => setAttempt((current) => current + 1)}
+        >
+          Try again
+        </button>
+      </main>
     );
   }
   return <Outlet />;
