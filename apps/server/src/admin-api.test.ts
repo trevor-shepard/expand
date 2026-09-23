@@ -103,6 +103,21 @@ describe("admin API", () => {
     expect(tampered.statusCode).toBe(401);
   });
 
+  it("preserves client errors for malformed JSON requests", async () => {
+    const response = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/login",
+      headers: { "content-type": "application/json" },
+      payload: "{\"password\":",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.json().error).toEqual({
+      code: "BAD_REQUEST",
+      message: "Invalid request",
+    });
+  });
+
   it("rate limits repeated failed login attempts", async () => {
     const responses = [];
     for (let attempt = 0; attempt < 6; attempt += 1) {
@@ -118,6 +133,32 @@ describe("admin API", () => {
     expect(responses.slice(0, 5).every((response) => response.statusCode === 401))
       .toBe(true);
     expect(responses[5].statusCode).toBe(429);
+  });
+
+  it("rejects cross-origin login and logout requests", async () => {
+    const crossOriginLogin = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/login",
+      headers: {
+        host: "expand.example",
+        origin: "https://attacker.example",
+      },
+      payload: { password: auth.password },
+    });
+    expect(crossOriginLogin.statusCode).toBe(403);
+    expect(crossOriginLogin.headers["set-cookie"]).toBeUndefined();
+
+    const cookie = await login();
+    const crossOriginLogout = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/logout",
+      headers: {
+        cookie,
+        host: "expand.example",
+        origin: "https://attacker.example",
+      },
+    });
+    expect(crossOriginLogout.statusCode).toBe(403);
   });
 
   it("creates, updates, publishes, unpublishes, and archives a level", async () => {

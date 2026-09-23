@@ -16,6 +16,7 @@ export class RepositoryError extends Error {
 
 export interface LevelRepository {
   close?(): Promise<void>;
+  checkHealth?(): Promise<void>;
   listPublished(): Promise<LevelsListResponse>;
   listAdmin(): Promise<AdminLevel[]>;
   getById(id: string): Promise<AdminLevel>;

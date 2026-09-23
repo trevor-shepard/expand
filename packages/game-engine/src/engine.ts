@@ -73,7 +73,7 @@ export function createLevelRuntime(level: PlayableLevel): LevelRuntime {
 }
 
 export function clicksRemaining(grid: GridState): number {
-  return grid.clickLimit - grid.clickCount;
+  return Math.max(0, grid.clickLimit - grid.clickCount);
 }
 
 export function applyCellClick(grid: GridState, x: number, y: number): GridState {
@@ -89,6 +89,10 @@ export function applyCellClick(grid: GridState, x: number, y: number): GridState
   if (cell.alive) {
     cell.pendingForceAlive = true;
     return next;
+  }
+
+  if (next.clickCount >= next.clickLimit) {
+    return grid;
   }
 
   wakeCell(next, x, y);
@@ -150,7 +154,7 @@ export function isWon(grid: GridState): boolean {
 }
 
 export function isLost(grid: GridState): boolean {
-  if (grid.clickCount === grid.clickLimit) {
+  if (grid.clickCount >= grid.clickLimit) {
     return true;
   }
 

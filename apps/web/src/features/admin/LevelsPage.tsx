@@ -50,6 +50,10 @@ export function LevelsPage() {
       await runLevelAction(level.id, action);
       await load();
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message
@@ -78,6 +82,10 @@ export function LevelsPage() {
       await reorderAdminLevels(publishedIds);
       await load();
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message
@@ -90,102 +98,159 @@ export function LevelsPage() {
 
   return (
     <main className="admin-main">
-      <div className="admin-title-row">
+      <header className="admin-title-row">
         <div>
-          <p className="admin-eyebrow">Content</p>
-          <h1>Levels</h1>
+          <p className="admin-eyebrow">Game content</p>
+          <h1>Level library</h1>
+          <p className="admin-page-intro">
+            Build the puzzle sequence players see in the public game.
+          </p>
         </div>
-        <Link className="button-link" to="/admin/levels/new">Create level</Link>
-      </div>
+        <Link className="button-link" to="/admin/levels/new">
+          <span aria-hidden="true">＋</span>
+          Create level
+        </Link>
+      </header>
 
       {error && (
         <div className="admin-error admin-card" role="alert">
-          <p>{error}</p>
-          <button type="button" onClick={() => void load()}>Try again</button>
+          <span className="admin-state-icon" aria-hidden="true">!</span>
+          <div>
+            <h2>Levels couldn&apos;t be loaded</h2>
+            <p>{error}</p>
+            <button type="button" onClick={() => void load()}>Try again</button>
+          </div>
         </div>
       )}
-      {!levels && !error && <p>Loading levels…</p>}
-
-      {levels && (
-        <div className="level-admin-list">
-          {levels.map((level, index) => {
-            const published = level.status === "published";
-            const previousPublished = levels
-              .slice(0, index)
-              .some((item) => item.status === "published");
-            const nextPublished = levels
-              .slice(index + 1)
-              .some((item) => item.status === "published");
-            return (
-              <article className="admin-card level-admin-row" key={level.id}>
-                <div className="level-admin-summary">
-                  <span className={`status-chip status-${level.status}`}>
-                    {level.status}
-                  </span>
-                  <div>
-                    <h2>{level.title}</h2>
-                    <p>
-                      {level.slug} · {level.width}×{level.height} · revision{" "}
-                      {level.revision}
-                    </p>
-                  </div>
-                </div>
-                <div className="admin-actions">
-                  {published && (
-                    <>
-                      <button
-                        type="button"
-                        aria-label={`Move ${level.title} up`}
-                        disabled={busyId !== null || !previousPublished}
-                        onClick={() => void move(level, -1)}
-                      >
-                        ↑
-                      </button>
-                      <button
-                        type="button"
-                        aria-label={`Move ${level.title} down`}
-                        disabled={busyId !== null || !nextPublished}
-                        onClick={() => void move(level, 1)}
-                      >
-                        ↓
-                      </button>
-                    </>
-                  )}
-                  <Link className="button-link button-secondary" to={`/admin/levels/${level.id}`}>
-                    Edit
-                  </Link>
-                  {published ? (
-                    <button
-                      type="button"
-                      disabled={busyId !== null}
-                      onClick={() => void changeStatus(level, "unpublish")}
-                    >
-                      Unpublish
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      disabled={busyId !== null}
-                      onClick={() => void changeStatus(level, "publish")}
-                    >
-                      Publish
-                    </button>
-                  )}
-                  {level.status !== "archived" && (
-                    <button
-                      type="button"
-                      className="button-danger"
-                      disabled={busyId !== null}
-                      onClick={() => void changeStatus(level, "archive")}
-                    >
-                      Archive
-                    </button>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+      {!levels && !error && (
+        <div className="admin-loading-list" role="status">
+          <span className="admin-spinner" aria-hidden="true" />
+          <span>Loading level library…</span>
         </div>
+      )}
+
+      {levels && levels.length === 0 && (
+        <section className="admin-card admin-empty-state">
+          <span className="admin-state-icon empty-grid-icon" aria-hidden="true">◇</span>
+          <p className="admin-eyebrow">Blank canvas</p>
+          <h2>Create your first level</h2>
+          <p>Design a starting pattern, set its click limit, and preview it before publishing.</p>
+          <Link className="button-link" to="/admin/levels/new">Create level</Link>
+        </section>
+      )}
+
+      {levels && levels.length > 0 && (
+        <>
+          <div className="library-summary">
+            <p>
+              <strong>{levels.length}</strong> {levels.length === 1 ? "level" : "levels"}
+            </p>
+            <span>{levels.filter((level) => level.status === "published").length} published</span>
+          </div>
+          <section className="level-admin-list" aria-label="Levels">
+            {levels.map((level, index) => {
+              const published = level.status === "published";
+              const previousPublished = levels
+                .slice(0, index)
+                .some((item) => item.status === "published");
+              const nextPublished = levels
+                .slice(index + 1)
+                .some((item) => item.status === "published");
+              return (
+                <article
+                  className="admin-card level-admin-row"
+                  key={level.id}
+                  aria-busy={busyId === level.id}
+                >
+                  <div className="level-admin-summary">
+                    <div className="level-position" aria-hidden="true">
+                      {published && level.position
+                        ? String(level.position).padStart(2, "0")
+                        : "—"}
+                    </div>
+                    <div>
+                      <div className="level-title-line">
+                        <h2>{level.title}</h2>
+                        <span className={`status-chip status-${level.status}`}>
+                          {level.status}
+                        </span>
+                      </div>
+                      <p className="level-slug">/{level.slug}</p>
+                      <dl className="level-meta">
+                        <div>
+                          <dt>Board</dt>
+                          <dd>{level.width} × {level.height}</dd>
+                        </div>
+                        <div>
+                          <dt>Clicks</dt>
+                          <dd>{level.clickLimit}</dd>
+                        </div>
+                        <div>
+                          <dt>Revision</dt>
+                          <dd>{level.revision}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                  <div className="admin-actions">
+                    {published && (
+                      <div className="reorder-actions" aria-label={`Reorder ${level.title}`}>
+                        <button
+                          type="button"
+                          className="icon-button button-secondary"
+                          aria-label={`Move ${level.title} up`}
+                          disabled={busyId !== null || !previousPublished}
+                          onClick={() => void move(level, -1)}
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          className="icon-button button-secondary"
+                          aria-label={`Move ${level.title} down`}
+                          disabled={busyId !== null || !nextPublished}
+                          onClick={() => void move(level, 1)}
+                        >
+                          ↓
+                        </button>
+                      </div>
+                    )}
+                    <Link className="button-link button-secondary" to={`/admin/levels/${level.id}`}>
+                      Edit
+                    </Link>
+                    {published ? (
+                      <button
+                        type="button"
+                        disabled={busyId !== null}
+                        onClick={() => void changeStatus(level, "unpublish")}
+                      >
+                        Unpublish
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled={busyId !== null}
+                        onClick={() => void changeStatus(level, "publish")}
+                      >
+                        Publish
+                      </button>
+                    )}
+                    {level.status !== "archived" && (
+                      <button
+                        type="button"
+                        className="button-danger"
+                        disabled={busyId !== null}
+                        onClick={() => void changeStatus(level, "archive")}
+                      >
+                        Archive
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+        </>
       )}
     </main>
   );

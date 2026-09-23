@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { LevelInput } from "@expand/contracts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  AdminApiError,
   createAdminLevel,
   getAdminLevel,
   updateAdminLevel,
@@ -40,6 +41,13 @@ export function LevelEditorPage() {
       })
       .catch((requestError: unknown) => {
         if (active) {
+          if (
+            requestError instanceof AdminApiError &&
+            requestError.status === 401
+          ) {
+            navigate("/admin/login", { replace: true });
+            return;
+          }
           setError(
             requestError instanceof Error
               ? requestError.message
@@ -53,7 +61,7 @@ export function LevelEditorPage() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, navigate]);
 
   const previewInput = useMemo<LevelInput | null>(() => {
     try {
@@ -101,6 +109,10 @@ export function LevelEditorPage() {
       navigate(`/admin/levels/${saved.id}`, { replace: !id });
       setState(levelToEditorState(saved));
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message
@@ -112,7 +124,13 @@ export function LevelEditorPage() {
   }
 
   if (loading) {
-    return <main className="admin-main"><p>Loading level…</p></main>;
+    return (
+      <main className="admin-main admin-editor-loading" role="status">
+        <span className="admin-spinner" aria-hidden="true" />
+        <strong>Loading level editor</strong>
+        <span>Preparing the grid and preview…</span>
+      </main>
+    );
   }
 
   const width = Number(state.width);
@@ -127,54 +145,72 @@ export function LevelEditorPage() {
 
   return (
     <main className="admin-main">
-      <div className="admin-title-row">
+      <header className="admin-title-row editor-title-row">
         <div>
           <p className="admin-eyebrow">{editing ? "Edit content" : "New content"}</p>
           <h1>{editing ? state.title || "Untitled level" : "Create level"}</h1>
+          <p className="admin-page-intro">
+            {editing
+              ? "Refine the rules, starting pattern, and player experience."
+              : "Shape a starting pattern and test it before it reaches players."}
+          </p>
         </div>
         <Link className="button-link button-secondary" to="/admin/levels">
+          <span aria-hidden="true">←</span>
           Back to levels
         </Link>
-      </div>
+      </header>
 
-      {error && <p className="admin-error admin-card" role="alert">{error}</p>}
+      {error && (
+        <div className="admin-error admin-card admin-inline-alert" role="alert">
+          <span aria-hidden="true">!</span>
+          <p>{error}</p>
+        </div>
+      )}
 
       <form className="editor-layout" onSubmit={save}>
         <section className="admin-card editor-fields">
-          <h2>Level details</h2>
-          <label>
-            Title
-            <input
-              value={state.title}
-              required
-              maxLength={80}
-              onChange={(event) => setField("title", event.target.value)}
-            />
-          </label>
-          <label>
-            Slug
-            <input
-              value={state.slug}
-              required
-              maxLength={64}
-              pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-              placeholder="lowercase-kebab-case"
-              onChange={(event) => setField("slug", event.target.value)}
-            />
-          </label>
-          <label>
-            Description
-            <textarea
-              value={state.description}
-              maxLength={500}
-              rows={3}
-              onChange={(event) => setField("description", event.target.value)}
-            />
-          </label>
+          <div className="editor-section-heading">
+            <span>01</span>
+            <div>
+              <h2>Level details</h2>
+              <p>Name the puzzle and define its limits.</p>
+            </div>
+          </div>
+          <label htmlFor="level-title">Title</label>
+          <input
+            id="level-title"
+            value={state.title}
+            required
+            maxLength={80}
+            placeholder="A memorable level name"
+            onChange={(event) => setField("title", event.target.value)}
+          />
+          <label htmlFor="level-slug">Slug</label>
+          <input
+            id="level-slug"
+            value={state.slug}
+            required
+            maxLength={64}
+            pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+            placeholder="lowercase-kebab-case"
+            onChange={(event) => setField("slug", event.target.value)}
+          />
+          <p className="field-hint">Used in the level URL and internal references.</p>
+          <label htmlFor="level-description">Description</label>
+          <textarea
+            id="level-description"
+            value={state.description}
+            maxLength={500}
+            rows={3}
+            placeholder="Give players a little context (optional)"
+            onChange={(event) => setField("description", event.target.value)}
+          />
           <div className="field-row">
-            <label>
-              Width
+            <div className="field-group">
+              <label htmlFor="level-width">Width</label>
               <input
+                id="level-width"
                 type="number"
                 min={2}
                 max={50}
@@ -182,10 +218,11 @@ export function LevelEditorPage() {
                 required
                 onChange={(event) => setDimension("width", event.target.value)}
               />
-            </label>
-            <label>
-              Height
+            </div>
+            <div className="field-group">
+              <label htmlFor="level-height">Height</label>
               <input
+                id="level-height"
                 type="number"
                 min={2}
                 max={50}
@@ -193,28 +230,41 @@ export function LevelEditorPage() {
                 required
                 onChange={(event) => setDimension("height", event.target.value)}
               />
-            </label>
-            <label>
-              Click limit
+            </div>
+            <div className="field-group">
+              <label htmlFor="level-click-limit">Click limit</label>
               <input
+                id="level-click-limit"
                 type="number"
                 min={1}
                 value={state.clickLimit}
                 required
                 onChange={(event) => setField("clickLimit", event.target.value)}
               />
-            </label>
+            </div>
           </div>
-          <button type="submit" disabled={saving}>
+          <button
+            className="button-primary button-wide editor-save-button"
+            type="submit"
+            disabled={saving}
+          >
             {saving ? "Saving…" : editing ? "Save changes" : "Create draft"}
+            {!saving && <span aria-hidden="true">→</span>}
           </button>
         </section>
 
         <section className="admin-card editor-grid-panel">
-          <h2>Initial live cells</h2>
-          <p className="admin-hint">
-            Click cells to toggle the pattern. Active cells are dark.
-          </p>
+          <div className="editor-section-heading">
+            <span>02</span>
+            <div>
+              <h2>Starting pattern</h2>
+              <p>Choose which cells begin alive.</p>
+            </div>
+          </div>
+          <div className="grid-legend" aria-hidden="true">
+            <span><i className="legend-cell" /> Empty</span>
+            <span><i className="legend-cell selected" /> Alive</span>
+          </div>
           {validGridSize ? (
             <InitialCellGrid
               width={width}
@@ -229,10 +279,13 @@ export function LevelEditorPage() {
         </section>
 
         <section className="admin-card editor-preview-panel">
-          <h2>Playtest preview</h2>
-          <p className="admin-hint">
-            This preview uses the same game engine as the public game.
-          </p>
+          <div className="editor-section-heading">
+            <span>03</span>
+            <div>
+              <h2>Playtest preview</h2>
+              <p>Try the pattern with the same engine your players use.</p>
+            </div>
+          </div>
           <PlaytestPreview input={previewInput} />
         </section>
       </form>

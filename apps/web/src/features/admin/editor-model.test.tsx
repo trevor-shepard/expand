@@ -76,16 +76,47 @@ describe("InitialCellGrid", () => {
     expect(screen.getAllByRole("button")).toHaveLength(6);
     expect(
       screen
-        .getByRole("button", { name: "Row 1 column 2" })
+        .getByRole("button", { name: "Row 1 column 2, alive" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
 
     await user.click(
-      screen.getByRole("button", { name: "Row 2 column 3" }),
+      screen.getByRole("button", { name: "Row 2 column 3, empty" }),
     );
     expect(onChange).toHaveBeenCalledWith([
       { x: 1, y: 0 },
       { x: 2, y: 1 },
     ]);
+  });
+
+  it("supports arrow-key navigation between cells", async () => {
+    const user = userEvent.setup();
+    render(
+      <InitialCellGrid
+        width={3}
+        height={2}
+        cells={[{ x: 0, y: 0 }]}
+        onChange={vi.fn()}
+      />,
+    );
+
+    const first = screen.getByRole("button", {
+      name: "Row 1 column 1, alive",
+    });
+    expect(first.tabIndex).toBe(0);
+    expect(
+      screen.getByRole("button", {
+        name: "Row 1 column 2, empty",
+      }).tabIndex,
+    ).toBe(-1);
+    first.focus();
+    await user.keyboard("{ArrowRight}{ArrowDown}");
+
+    const destination = screen.getByRole("button", {
+      name: "Row 2 column 2, empty",
+    });
+    expect(document.activeElement).toBe(destination);
+    expect(destination.tabIndex).toBe(0);
+    expect(first.tabIndex).toBe(-1);
   });
 });

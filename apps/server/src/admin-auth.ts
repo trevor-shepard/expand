@@ -100,6 +100,7 @@ export class AdminAuth {
           timeWindow: "1 minute",
         },
       },
+      preHandler: this.requireSameOrigin,
     }, async (request, reply) => {
       const { password } = adminLoginSchema.parse(request.body);
       if (!passwordMatches(password, this.config.password)) {
@@ -137,7 +138,9 @@ export class AdminAuth {
       return adminSessionResponseSchema.parse({ authenticated: true });
     });
 
-    app.post("/api/v1/admin/auth/logout", async (_request, reply) => {
+    app.post("/api/v1/admin/auth/logout", {
+      preHandler: this.requireSameOrigin,
+    }, async (_request, reply) => {
       reply
         .header("Cache-Control", "no-store")
         .clearCookie(SESSION_COOKIE_NAME, {

@@ -31,7 +31,20 @@ export async function buildApp(
   await auth.register(app);
   registerAdminLevelRoutes(app, options.repository, auth);
 
-  app.get("/health", async () => ({ status: "ok" }));
+  app.get("/health", async (request, reply) => {
+    try {
+      await options.repository.checkHealth?.();
+      return { status: "ok" };
+    } catch (error) {
+      request.log.error(error);
+      return reply.code(503).send({
+        error: {
+          code: "SERVICE_UNAVAILABLE",
+          message: "Database is not ready",
+        },
+      });
+    }
+  });
 
   app.get("/api/v1/levels", async (request, reply) => {
     const body = await listPublishedLevels(options.repository);
@@ -98,6 +111,33 @@ export async function buildApp(
         error: {
           code: "RATE_LIMITED",
           message: "Too many login attempts; try again later",
+        },
+      });
+    }
+
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "statusCode" in error &&
+      typeof error.statusCode === "number" &&
+      error.statusCode >= 400 &&
+      error.statusCode < 500
+    ) {
+      const statusCode = error.statusCode;
+      return reply.code(statusCode).send({
+        error: {
+          code:
+            statusCode === 404
+              ? "NOT_FOUND"
+              : statusCode === 413
+                ? "PAYLOAD_TOO_LARGE"
+                : "BAD_REQUEST",
+          message:
+            statusCode === 404
+              ? "Not found"
+              : statusCode === 413
+                ? "Request payload is too large"
+                : "Invalid request",
         },
       });
     }
