@@ -7,10 +7,9 @@ on:
       - cursor/modern-shell-a104
   workflow_dispatch:
 
+# peaceiris pushes the built `apps/web/dist` to `gh-pages` (no Pages "create site" API).
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -18,9 +17,6 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -46,16 +42,8 @@ jobs:
           VITE_BASE_PATH: /expand/
           VITE_STATIC_LEVELS: "true"
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: apps/web/dist
-
-      - name: Deploy site
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: apps/web/dist
