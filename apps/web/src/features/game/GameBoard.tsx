@@ -58,9 +58,9 @@ export function GameBoard({ grid, onCellClick, disabled }: GameBoardProps) {
       if (isInteractive(nextIndex)) {
         setFocusedIndex(nextIndex);
         const board = event.currentTarget.closest(".board");
-        board
-          ?.querySelectorAll<HTMLButtonElement>(".cell")
-          [nextIndex]?.focus();
+        const buttons =
+          board?.querySelectorAll<HTMLButtonElement>(".cell");
+        buttons?.[nextIndex]?.focus();
         return;
       }
     }
