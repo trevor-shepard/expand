@@ -3,6 +3,8 @@ import { STARTER_LEVELS } from "@expand/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useGameSession } from "./useGameSession";
 
+const TEST_LEVELS = [STARTER_LEVELS[0]];
+
 describe("useGameSession", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -15,7 +17,7 @@ describe("useGameSession", () => {
 
   it("pauses and resumes without resetting level progress", () => {
     const { result, rerender } = renderHook(
-      ({ paused }) => useGameSession([STARTER_LEVELS[0]], paused),
+      ({ paused }) => useGameSession(TEST_LEVELS, paused),
       { initialProps: { paused: true } },
     );
 
