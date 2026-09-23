@@ -120,6 +120,32 @@ describe("admin API", () => {
     expect(responses[5].statusCode).toBe(429);
   });
 
+  it("rejects cross-origin login and logout requests", async () => {
+    const crossOriginLogin = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/login",
+      headers: {
+        host: "expand.example",
+        origin: "https://attacker.example",
+      },
+      payload: { password: auth.password },
+    });
+    expect(crossOriginLogin.statusCode).toBe(403);
+    expect(crossOriginLogin.headers["set-cookie"]).toBeUndefined();
+
+    const cookie = await login();
+    const crossOriginLogout = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/logout",
+      headers: {
+        cookie,
+        host: "expand.example",
+        origin: "https://attacker.example",
+      },
+    });
+    expect(crossOriginLogout.statusCode).toBe(403);
+  });
+
   it("creates, updates, publishes, unpublishes, and archives a level", async () => {
     const cookie = await login();
     const created = await app.inject({
