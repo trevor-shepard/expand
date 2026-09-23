@@ -88,7 +88,12 @@ export async function buildApp(
       });
     }
 
-    if (error.statusCode === 429) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "statusCode" in error &&
+      error.statusCode === 429
+    ) {
       return reply.code(429).send({
         error: {
           code: "RATE_LIMITED",
