@@ -37,10 +37,10 @@ export function InitialCellGrid({
     if (nextIndex < 0 || nextIndex >= width * height || !staysInRow) return;
 
     event.preventDefault();
-    event.currentTarget
-      .closest(".initial-cell-grid")
-      ?.querySelectorAll<HTMLButtonElement>(".initial-cell")
-      [nextIndex]?.focus();
+    const grid = event.currentTarget.closest(".initial-cell-grid");
+    const buttons =
+      grid?.querySelectorAll<HTMLButtonElement>(".initial-cell");
+    buttons?.[nextIndex]?.focus();
   }
 
   return (
