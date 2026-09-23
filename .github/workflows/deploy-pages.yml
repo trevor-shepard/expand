@@ -1,0 +1,59 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+      - cursor/modern-shell-a104
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: ${{ github.ref == 'refs/heads/master' && 'github-pages' || 'github-pages-preview' }}
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared packages
+        run: |
+          npm run build -w @expand/contracts
+          npm run build -w @expand/game-engine
+
+      - name: Build static site
+        run: npm run build -w @expand/web
+        env:
+          VITE_BASE_PATH: /expand/
+          VITE_STATIC_LEVELS: "true"
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/web/dist
+
+      - name: Deploy site
+        id: deployment
+        uses: actions/deploy-pages@v4

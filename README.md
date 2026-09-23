@@ -1,62 +1,45 @@
 # expand
 
-A mobile-first Conway's Game of Life puzzle. Reach every square before life
-ends or the click budget runs out.
+Conway's Game of Life puzzle — visit every cell before you run out of clicks or live cells.
 
-## Modernization foundation
+## Stack (Phase 0/1)
 
-The current Phase 0/1 slice uses:
+- **Web:** Vite + React + TypeScript (mobile-first)
+- **API:** Fastify (`GET /api/v1/levels`)
+- **Shared:** Zod level contracts + legacy starter fixtures
+- **Game engine:** pure TypeScript (DOM-free), characterization-tested
+- **Database:** Drizzle schema prepared under `db/` (PostgreSQL persistence lands in Phase 2)
 
-- Vite, React, and TypeScript for the public game.
-- A pure, DOM-independent Conway engine with characterization tests.
-- Fastify for the same-origin HTTP server and `GET /api/v1/levels`.
-- Shared Zod contracts for fixture, API, and client validation.
-- A validated copy of the six legacy levels as the temporary API source.
-- A Drizzle PostgreSQL schema ready for a later persistence migration.
+## Development
 
-Database connections, migrations, authentication, and the admin editor are
-deliberately deferred. The fixture repository implements the boundary that a
-future Drizzle repository will replace.
-
-## Local development
-
-Node 22 or newer is required.
+Requirements: Node 20+.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Vite runs at `http://localhost:5173` and proxies `/api` to Fastify at
-`http://localhost:3001`.
+- Game UI: http://localhost:5173
+- API: http://localhost:8080
 
-## Quality gates
+## Scripts
 
-```bash
-npm run typecheck
-npm test
-npm run build
-npm start
-```
+| Command | Description |
+|---|---|
+| `npm run dev` | Vite + Fastify with API proxy |
+| `npm run build` | Build contracts, engine, web, and server |
+| `npm start` | Run production server (serves `apps/web/dist`) |
+| `npm test` | Vitest (contracts, engine, API service) |
+| `npm run typecheck` | TypeScript across workspaces |
 
-`npm start` serves the built SPA and API from one Fastify process.
+## Environment
 
-## Source layout
+| Variable | Purpose |
+|---|---|
+| `PORT` | API/static server port (default `8080`) |
+| `NODE_ENV` | `production` enables static file serving |
+| `DATABASE_URL` | Reserved for Phase 2 Drizzle migrations |
 
-```text
-src/
-  client/             React game and mobile-first styles
-  domain/game/        Pure Conway and player-action state transitions
-  server/             Fastify app and fixture repository
-  shared/             Zod contracts and validated legacy levels
-  db/schema.ts        Drizzle-ready PostgreSQL model (not connected yet)
-```
+## Legacy note
 
-## Preserved gameplay rules
-
-- Initial and generated live cells count as visited.
-- Unvisited cells ignore player input.
-- Waking a visited dead cell spends one click immediately.
-- Forcing a visited live cell through the next generation is free.
-- Winning means every square has been visited.
-- A win takes precedence when win and loss happen in the same generation.
+The 2019 Webpack 4 + Express + Heroku keep-alive client has been removed. Level content is validated fixture data served by Fastify until PostgreSQL seeding is added.

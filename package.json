@@ -2,54 +2,33 @@
   "name": "expand",
   "version": "2.0.0",
   "private": true,
-  "description": "A mobile-first Conway's Game of Life puzzle",
-  "main": "server-dist/server/index.js",
-  "scripts": {
-    "dev": "concurrently -k -n web,api \"npm:dev:web\" \"npm:dev:api\"",
-    "dev:web": "vite",
-    "dev:api": "tsx watch src/server/index.ts",
-    "build": "npm run typecheck && vite build && tsc -p tsconfig.server.json",
-    "start": "node server-dist/server/index.js",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/trevor-shepard/expand.git"
-  },
-  "author": "Trevor Shepard",
-  "license": "MIT",
+  "type": "module",
+  "description": "Expand — Conway puzzle game (modernized monorepo)",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
-  "bugs": {
-    "url": "https://github.com/trevor-shepard/expand/issues"
-  },
-  "homepage": "https://github.com/trevor-shepard/expand#readme",
-  "dependencies": {
-    "@fastify/static": "^10.1.4",
-    "drizzle-orm": "^0.45.2",
-    "fastify": "^5.12.5",
-    "pg": "^8.23.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "zod": "^4.6.5"
+  "scripts": {
+    "dev": "concurrently -n web,api -c cyan,magenta \"npm run dev -w @expand/web\" \"npm run dev -w @expand/server\"",
+    "build": "npm run build -w @expand/contracts && npm run build -w @expand/game-engine && npm run build -w @expand/web && npm run build -w @expand/server",
+    "start": "npm run start -w @expand/server",
+    "lint": "eslint .",
+    "typecheck": "npm run build -w @expand/contracts && npm run build -w @expand/game-engine && npm run typecheck -ws --if-present",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^14.6.7",
-    "@types/node": "^26.6.2",
-    "@types/pg": "^8.23.1",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
-    "concurrently": "^10.0.5",
-    "jsdom": "^29.1.1",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.1"
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^22.13.10",
+    "concurrently": "^9.1.2",
+    "drizzle-kit": "^0.30.5",
+    "drizzle-orm": "^0.40.1",
+    "eslint": "^9.22.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1",
+    "vitest": "^3.0.9"
   }
 }

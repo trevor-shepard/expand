@@ -1,8 +1,9 @@
 node_modules/
 dist/
-server-dist/
-coverage/
+apps/web/dist/
+apps/server/dist/
+packages/*/dist/
+.DS_Store
+*.log
 .env
 .env.*
-!.env.example
-.DS_Store
