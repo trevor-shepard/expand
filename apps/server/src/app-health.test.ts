@@ -34,7 +34,7 @@ describe("health endpoint", () => {
       url: "/health",
     });
 
-    expect(response.statusCode).toBe(500);
-    expect(response.json().error.code).toBe("INTERNAL_ERROR");
+    expect(response.statusCode).toBe(503);
+    expect(response.json().error.code).toBe("SERVICE_UNAVAILABLE");
   });
 });
