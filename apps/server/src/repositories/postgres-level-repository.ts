@@ -261,6 +261,9 @@ export class PostgresLevelRepository implements LevelRepository {
       if (!current) {
         throw new RepositoryError("NOT_FOUND", `Level ${id} was not found`);
       }
+      if (status === "draft" && current.status !== "published") {
+        return toAdminLevel(current);
+      }
       if (current.status === status) return toAdminLevel(current);
 
       const timestamp = new Date();
