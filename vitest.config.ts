@@ -16,6 +16,7 @@ export default defineConfig({
       "packages/contracts",
       "packages/game-engine",
       "apps/server",
+      "apps/web",
     ],
   },
 });
