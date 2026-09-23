@@ -266,3 +266,293 @@ body {
     flex: 1;
   }
 }
+
+.admin-shell,
+.admin-login,
+.admin-route-status {
+  min-height: 100dvh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f4f6fb;
+}
+
+.admin-shell {
+  padding-bottom: 3rem;
+}
+
+.admin-login {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.admin-card {
+  border: 1px solid #dce2ee;
+  border-radius: 0.8rem;
+  background: #fff;
+  box-shadow: 0 0.2rem 0.8rem rgba(23, 32, 51, 0.06);
+  padding: 1rem;
+}
+
+.admin-login-card {
+  width: min(100%, 25rem);
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem max(1rem, calc((100vw - 72rem) / 2));
+  border-bottom: 1px solid #dce2ee;
+  background: #fff;
+}
+
+.admin-header nav,
+.admin-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-brand {
+  color: #172033;
+  font-weight: 750;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.admin-eyebrow {
+  margin: 0 0 0.15rem;
+  color: #6754d9;
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-main {
+  width: min(calc(100% - 2rem), 72rem);
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+.admin-title-row,
+.level-admin-row,
+.level-admin-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-title-row,
+.level-admin-row {
+  justify-content: space-between;
+}
+
+.admin-title-row {
+  margin-bottom: 1.25rem;
+}
+
+.admin-title-row h1,
+.level-admin-row h2,
+.editor-layout h2,
+.admin-login-card h1 {
+  margin: 0;
+}
+
+.level-admin-list,
+.editor-fields,
+.editor-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.level-admin-summary p {
+  margin: 0.25rem 0 0;
+  color: #647087;
+  font-size: 0.9rem;
+}
+
+.status-chip {
+  min-width: 5.5rem;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.status-published {
+  color: #11603b;
+  background: #d9f7e8;
+}
+
+.status-draft {
+  color: #6a4d00;
+  background: #fff1bf;
+}
+
+.status-archived {
+  color: #5a6170;
+  background: #e8ebf1;
+}
+
+.admin-shell button,
+.admin-login button,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  border: 1px solid #5442c7;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.75rem;
+  font: inherit;
+  font-weight: 650;
+  color: #fff;
+  background: #6754d9;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-shell button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-shell .button-secondary,
+.admin-login .button-secondary {
+  color: #4031a8;
+  background: #fff;
+}
+
+.admin-shell .button-danger {
+  border-color: #c73952;
+  color: #a61f38;
+  background: #fff;
+}
+
+.admin-shell label,
+.admin-login label {
+  display: grid;
+  gap: 0.35rem;
+  color: #354058;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.admin-shell input,
+.admin-shell textarea,
+.admin-login input {
+  width: 100%;
+  border: 1px solid #b9c2d3;
+  border-radius: 0.45rem;
+  padding: 0.65rem 0.7rem;
+  font: inherit;
+  color: #172033;
+  background: #fff;
+}
+
+.admin-shell input:focus,
+.admin-shell textarea:focus,
+.admin-login input:focus {
+  outline: 3px solid rgba(103, 84, 217, 0.2);
+  border-color: #6754d9;
+}
+
+.admin-error {
+  color: #a61f38;
+}
+
+.admin-error p {
+  margin-top: 0;
+}
+
+.admin-hint {
+  margin: 0 0 0.75rem;
+  color: #647087;
+  font-size: 0.9rem;
+}
+
+.editor-layout {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.editor-grid-panel,
+.editor-preview-panel {
+  min-width: 0;
+  overflow: auto;
+}
+
+.initial-cell-grid {
+  display: grid;
+  gap: 0.2rem;
+  min-width: min-content;
+}
+
+.admin-shell .initial-cell {
+  width: 100%;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  aspect-ratio: 1;
+  border: 1px solid #aab4c7;
+  border-radius: 0.2rem;
+  padding: 0;
+  background: #eef1f7;
+}
+
+.admin-shell .initial-cell.selected {
+  border-color: #3d2da7;
+  background: #5442c7;
+}
+
+.playtest-preview > p {
+  color: #354058;
+}
+
+.preview-board {
+  width: min(100%, 32rem);
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  padding: 0.35rem;
+  background: #201148;
+}
+
+@media (max-width: 44rem) {
+  .admin-header,
+  .admin-title-row,
+  .level-admin-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .level-admin-summary {
+    align-items: flex-start;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .editor-layout {
+    grid-template-columns: minmax(18rem, 0.8fr) minmax(24rem, 1.2fr);
+  }
+
+  .editor-preview-panel {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import type { PlayableLevel } from "@expand/contracts";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { fetchPublishedLevels } from "./api/levels";
+import { AdminApp } from "./features/admin/AdminApp";
 import { GameScreen } from "./features/game/GameScreen";
 import { WelcomeModal } from "./features/game/WelcomeModal";
 
-export function App() {
+function PublicGame() {
   const [levels, setLevels] = useState<PlayableLevel[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,5 +61,15 @@ export function App() {
         <WelcomeModal onPlay={() => setShowInstructions(false)} />
       )}
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<PublicGame />} />
+      <Route path="/admin/*" element={<AdminApp />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
