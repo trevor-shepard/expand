@@ -73,4 +73,37 @@ describe("GameBoard", () => {
     await user.click(liveCell);
     expect(onCellClick).toHaveBeenCalledWith(0, 0);
   });
+
+  it("uses arrow keys and one tab stop to navigate visited cells", async () => {
+    const user = userEvent.setup();
+    const grid: GridState = {
+      width: 3,
+      height: 1,
+      clickLimit: 2,
+      clickCount: 0,
+      unvisitedCount: 1,
+      cells: [[
+        { alive: true, visited: true, pendingForceAlive: false },
+        { alive: false, visited: false, pendingForceAlive: false },
+        { alive: false, visited: true, pendingForceAlive: false },
+      ]],
+    };
+
+    render(<GameBoard grid={grid} onCellClick={vi.fn()} />);
+    const first = screen.getByRole("button", {
+      name: "Row 1 column 1, alive, visited",
+    });
+    const last = screen.getByRole("button", {
+      name: "Row 1 column 3, dead, visited",
+    });
+
+    expect(first.tabIndex).toBe(0);
+    expect(last.tabIndex).toBe(-1);
+    first.focus();
+    await user.keyboard("{ArrowRight}");
+
+    expect(document.activeElement).toBe(last);
+    expect(first.tabIndex).toBe(-1);
+    expect(last.tabIndex).toBe(0);
+  });
 });

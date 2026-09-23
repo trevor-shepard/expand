@@ -1,5 +1,5 @@
 import type { CellCoordinate } from "@expand/contracts";
-import type { KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { coordinateKey, toggleInitialCell } from "./editor-model";
 
 interface InitialCellGridProps {
@@ -16,6 +16,12 @@ export function InitialCellGrid({
   onChange,
 }: InitialCellGridProps) {
   const active = new Set(cells.map(coordinateKey));
+  const cellCount = width * height;
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  useEffect(() => {
+    setFocusedIndex((current) => Math.min(current, cellCount - 1));
+  }, [cellCount]);
 
   function moveGridFocus(
     event: KeyboardEvent<HTMLButtonElement>,
@@ -29,6 +35,7 @@ export function InitialCellGrid({
     };
     const offset = offsets[event.key];
     if (!offset) return;
+    event.preventDefault();
 
     const nextIndex = index + offset;
     const staysInRow =
@@ -36,7 +43,7 @@ export function InitialCellGrid({
       (event.key !== "ArrowRight" || index % width !== width - 1);
     if (nextIndex < 0 || nextIndex >= width * height || !staysInRow) return;
 
-    event.preventDefault();
+    setFocusedIndex(nextIndex);
     const grid = event.currentTarget.closest(".initial-cell-grid");
     const buttons =
       grid?.querySelectorAll<HTMLButtonElement>(".initial-cell");
@@ -62,6 +69,8 @@ export function InitialCellGrid({
                   className={`initial-cell${selected ? " selected" : ""}`}
                   aria-label={`Row ${y + 1} column ${x + 1}, ${selected ? "alive" : "empty"}`}
                   aria-pressed={selected}
+                  tabIndex={focusedIndex === index ? 0 : -1}
+                  onFocus={() => setFocusedIndex(index)}
                   onKeyDown={(event) => moveGridFocus(event, index)}
                   onClick={() => onChange(toggleInitialCell(cells, { x, y }))}
                 />

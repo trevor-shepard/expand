@@ -103,11 +103,20 @@ describe("InitialCellGrid", () => {
     const first = screen.getByRole("button", {
       name: "Row 1 column 1, alive",
     });
+    expect(first.tabIndex).toBe(0);
+    expect(
+      screen.getByRole("button", {
+        name: "Row 1 column 2, empty",
+      }).tabIndex,
+    ).toBe(-1);
     first.focus();
     await user.keyboard("{ArrowRight}{ArrowDown}");
 
-    expect(document.activeElement).toBe(
-      screen.getByRole("button", { name: "Row 2 column 2, empty" }),
-    );
+    const destination = screen.getByRole("button", {
+      name: "Row 2 column 2, empty",
+    });
+    expect(document.activeElement).toBe(destination);
+    expect(destination.tabIndex).toBe(0);
+    expect(first.tabIndex).toBe(-1);
   });
 });
