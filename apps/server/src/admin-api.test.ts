@@ -103,6 +103,21 @@ describe("admin API", () => {
     expect(tampered.statusCode).toBe(401);
   });
 
+  it("preserves client errors for malformed JSON requests", async () => {
+    const response = await app.inject({
+      method: "POST",
+      url: "/api/v1/admin/auth/login",
+      headers: { "content-type": "application/json" },
+      payload: "{\"password\":",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.json().error).toEqual({
+      code: "BAD_REQUEST",
+      message: "Invalid request",
+    });
+  });
+
   it("rate limits repeated failed login attempts", async () => {
     const responses = [];
     for (let attempt = 0; attempt < 6; attempt += 1) {

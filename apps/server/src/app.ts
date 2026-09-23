@@ -102,6 +102,33 @@ export async function buildApp(
       });
     }
 
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "statusCode" in error &&
+      typeof error.statusCode === "number" &&
+      error.statusCode >= 400 &&
+      error.statusCode < 500
+    ) {
+      const statusCode = error.statusCode;
+      return reply.code(statusCode).send({
+        error: {
+          code:
+            statusCode === 404
+              ? "NOT_FOUND"
+              : statusCode === 413
+                ? "PAYLOAD_TOO_LARGE"
+                : "BAD_REQUEST",
+          message:
+            statusCode === 404
+              ? "Not found"
+              : statusCode === 413
+                ? "Request payload is too large"
+                : "Invalid request",
+        },
+      });
+    }
+
     app.log.error(error);
     return reply.code(500).send({
       error: {
