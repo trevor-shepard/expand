@@ -31,7 +31,10 @@ export async function buildApp(
   await auth.register(app);
   registerAdminLevelRoutes(app, options.repository, auth);
 
-  app.get("/health", async () => ({ status: "ok" }));
+  app.get("/health", async () => {
+    await options.repository.checkHealth?.();
+    return { status: "ok" };
+  });
 
   app.get("/api/v1/levels", async (request, reply) => {
     const body = await listPublishedLevels(options.repository);

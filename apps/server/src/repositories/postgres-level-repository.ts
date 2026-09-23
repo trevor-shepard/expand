@@ -90,6 +90,10 @@ export class PostgresLevelRepository implements LevelRepository {
     await this.client?.end();
   }
 
+  async checkHealth(): Promise<void> {
+    await this.db.select({ id: levels.id }).from(levels).limit(1);
+  }
+
   async listPublished() {
     const rows = await this.db
       .select()
