@@ -15,6 +15,10 @@ import {
   type LevelRepository,
 } from "./level-repository.js";
 
+// Lifecycle operations share this transaction-scoped lock because positions form
+// one ordered set even when two requests target different level rows.
+const LEVEL_ORDER_LOCK = sql`select pg_advisory_xact_lock(1163416656, 1)`;
+
 function toAdminLevel(row: LevelRow): AdminLevel {
   return adminLevelSchema.parse({
     id: row.id,
@@ -163,6 +167,7 @@ export class PostgresLevelRepository implements LevelRepository {
 
   async publish(id: string, actor: string): Promise<AdminLevel> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const [current] = await tx
         .select()
         .from(levels)
@@ -204,6 +209,7 @@ export class PostgresLevelRepository implements LevelRepository {
 
   async reorder(levelIds: string[], actor: string): Promise<AdminLevel[]> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const published = await tx
         .select()
         .from(levels)
@@ -253,6 +259,7 @@ export class PostgresLevelRepository implements LevelRepository {
     actor: string,
   ): Promise<AdminLevel> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const [current] = await tx
         .select()
         .from(levels)

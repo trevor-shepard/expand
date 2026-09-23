@@ -23,10 +23,12 @@ const archivedRow: LevelRow = {
 
 describe("PostgresLevelRepository lifecycle", () => {
   it("does not restore an archived level when asked to unpublish it", async () => {
+    const execute = vi.fn();
     const update = vi.fn();
     const transaction = vi.fn(async (
       callback: (transaction: object) => Promise<unknown>,
     ) => callback({
+      execute,
       select: () => ({
         from: () => ({
           where: () => ({
@@ -44,6 +46,7 @@ describe("PostgresLevelRepository lifecycle", () => {
 
     expect(result.status).toBe("archived");
     expect(result.revision).toBe(archivedRow.revision);
+    expect(execute).toHaveBeenCalledOnce();
     expect(update).not.toHaveBeenCalled();
   });
 });
