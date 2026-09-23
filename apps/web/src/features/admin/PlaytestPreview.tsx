@@ -81,7 +81,10 @@ export function PlaytestPreview({ input }: PlaytestPreviewProps) {
       </div>
       <div
         className="preview-board"
-        style={{ aspectRatio: `${grid.width} / ${grid.height}` }}
+        style={{
+          aspectRatio: `${grid.width} / ${grid.height}`,
+          maxWidth: `min(100%, calc(30rem * ${grid.width / grid.height}))`,
+        }}
       >
         <GameBoard
           grid={grid}
