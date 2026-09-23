@@ -1,7 +1,7 @@
 import type { CellCoordinate, PlayableLevel } from "@expand/contracts";
 import type { CellState, GridState, LevelRuntime } from "./types.js";
 
-export const GENERATION_INTERVAL_MS = 100;
+export const GENERATION_INTERVAL_MS = 1_000;
 
 function emptyCells(width: number, height: number): CellState[][] {
   return Array.from({ length: height }, () =>

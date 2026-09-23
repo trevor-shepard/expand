@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { STARTER_LEVELS } from "@expand/contracts";
 import {
+  GENERATION_INTERVAL_MS,
   applyCellClick,
   createGridFromLevel,
   createLevelRuntime,
@@ -10,6 +11,12 @@ import {
   legacyTupleToCoords,
   stepGeneration,
 } from "./engine.js";
+
+describe("game cadence", () => {
+  it("advances generations once per second", () => {
+    expect(GENERATION_INTERVAL_MS).toBe(1_000);
+  });
+});
 
 function miniLevel(
   width: number,
