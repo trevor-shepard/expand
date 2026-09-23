@@ -185,13 +185,13 @@ function AdminFrame() {
 export function AdminApp() {
   return (
     <Routes>
-      <Route path="/admin/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route element={<RequireAdmin />}>
         <Route element={<AdminFrame />}>
-          <Route path="/admin" element={<Navigate to="/admin/levels" replace />} />
-          <Route path="/admin/levels" element={<LevelsPage />} />
-          <Route path="/admin/levels/new" element={<LevelEditorPage />} />
-          <Route path="/admin/levels/:id" element={<LevelEditorPage />} />
+          <Route path="/" element={<Navigate to="/admin/levels" replace />} />
+          <Route path="/levels" element={<LevelsPage />} />
+          <Route path="/levels/new" element={<LevelEditorPage />} />
+          <Route path="/levels/:id" element={<LevelEditorPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/admin/levels" replace />} />
