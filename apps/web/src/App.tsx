@@ -33,31 +33,64 @@ function PublicGame() {
   return (
     <div className="app-shell">
       <header className="app-header">
-        <h1>expand</h1>
+        <a className="public-brand" href="/" aria-label="Expand home">
+          <span className="brand-mark" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>
+            <strong>expand</strong>
+            <small>Life, one move at a time</small>
+          </span>
+        </a>
         {!showInstructions && (
           <button
             type="button"
             className="instructions-button"
             onClick={() => setShowInstructions(true)}
           >
-            Instructions
+            <span aria-hidden="true">?</span>
+            How to play
           </button>
         )}
       </header>
 
-      {loading && <p className="status-banner">Loading levels…</p>}
-      {error && (
-        <div className="status-banner error" role="alert">
-          <p>{error}</p>
-          <button type="button" onClick={() => void load()}>Retry</button>
-        </div>
-      )}
+      <main className="public-main">
+        {loading && (
+          <div className="public-state" role="status">
+            <span className="loading-orbit" aria-hidden="true" />
+            <p className="state-kicker">Preparing the board</p>
+            <h1>Loading levels…</h1>
+            <p>Your next puzzle is almost ready.</p>
+          </div>
+        )}
+        {error && (
+          <div className="public-state public-state-error" role="alert">
+            <span className="state-icon" aria-hidden="true">!</span>
+            <p className="state-kicker">Connection interrupted</p>
+            <h1>We couldn&apos;t load the levels.</h1>
+            <p>{error}</p>
+            <button className="public-primary-button" type="button" onClick={() => void load()}>
+              Try again
+            </button>
+          </div>
+        )}
+        {levels?.length === 0 && (
+          <div className="public-state">
+            <span className="state-icon" aria-hidden="true">◇</span>
+            <p className="state-kicker">Nothing to play yet</p>
+            <h1>No levels are published.</h1>
+            <p>Check back soon—the next puzzle is taking shape.</p>
+          </div>
+        )}
+        {levels && levels.length > 0 && !loading && !error && (
+          <GameScreen levels={levels} pausedForInstructions={showInstructions} />
+        )}
+      </main>
 
-      {levels && levels.length > 0 && (
-        <GameScreen levels={levels} pausedForInstructions={showInstructions} />
-      )}
-
-      {showInstructions && (
+      {showInstructions && levels && levels.length > 0 && !loading && !error && (
         <WelcomeModal onPlay={() => setShowInstructions(false)} />
       )}
     </div>

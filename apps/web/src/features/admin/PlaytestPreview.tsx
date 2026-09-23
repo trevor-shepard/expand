@@ -41,35 +41,57 @@ export function PlaytestPreview({ input }: PlaytestPreviewProps) {
 
   if (!level || !grid) {
     return (
-      <p className="admin-hint">
-        Enter a valid level with at least one live cell to enable the preview.
-      </p>
+      <div className="preview-empty">
+        <span aria-hidden="true">◇</span>
+        <div>
+          <strong>Preview waiting</strong>
+          <p>Enter valid details and select at least one live cell to begin.</p>
+        </div>
+      </div>
     );
   }
 
   return (
     <div className="playtest-preview">
-      <div className="admin-actions">
-        <button type="button" onClick={() => setGrid(stepGeneration(grid))}>
-          Step generation
-        </button>
-        <button
-          type="button"
-          onClick={() => setGrid(createGridFromLevel(level))}
-        >
-          Reset preview
-        </button>
+      <div className="preview-toolbar">
+        <dl className="preview-stats" aria-label="Preview progress">
+          <div>
+            <dt>Clicks left</dt>
+            <dd>{clicksRemaining(grid)}</dd>
+          </div>
+          <div>
+            <dt>Squares left</dt>
+            <dd>{grid.unvisitedCount}</dd>
+          </div>
+        </dl>
+        <div className="admin-actions">
+          <button type="button" onClick={() => setGrid(stepGeneration(grid))}>
+            <span aria-hidden="true">▶</span>
+            Step once
+          </button>
+          <button
+            className="button-secondary"
+            type="button"
+            onClick={() => setGrid(createGridFromLevel(level))}
+          >
+            <span aria-hidden="true">↻</span>
+            Reset
+          </button>
+        </div>
       </div>
-      <p>
-        Clicks remaining: {clicksRemaining(grid)} · Squares remaining:{" "}
-        {grid.unvisitedCount}
-      </p>
-      <div className="preview-board">
+      <div
+        className="preview-board"
+        style={{ aspectRatio: `${grid.width} / ${grid.height}` }}
+      >
         <GameBoard
           grid={grid}
           onCellClick={(x, y) => setGrid(applyCellClick(grid, x, y))}
         />
       </div>
+      <p className="preview-note">
+        <span className="pulse-dot" aria-hidden="true" />
+        Manual preview—use “Step once” to advance a generation.
+      </p>
     </div>
   );
 }

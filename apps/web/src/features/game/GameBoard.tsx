@@ -25,18 +25,21 @@ export function GameBoard({ grid, onCellClick, disabled }: GameBoardProps) {
       role="grid"
       aria-label={`Game board ${grid.width} by ${grid.height}`}
     >
-      {grid.cells.flatMap((row, y) =>
-        row.map((cell, x) => (
-          <button
-            key={`${x}-${y}`}
-            type="button"
-            className={cellClassName(cell)}
-            disabled={disabled || !cell.visited}
-            aria-label={`Row ${y + 1} column ${x + 1}, ${cell.alive ? "alive" : "dead"}, ${cell.visited ? "visited" : "unvisited"}`}
-            onClick={() => onCellClick(x, y)}
-          />
-        )),
-      )}
+      {grid.cells.map((row, y) => (
+        <div className="grid-row" role="row" key={y}>
+          {row.map((cell, x) => (
+            <div className="grid-cell" role="gridcell" key={`${x}-${y}`}>
+              <button
+                type="button"
+                className={cellClassName(cell)}
+                disabled={disabled || !cell.visited}
+                aria-label={`Row ${y + 1} column ${x + 1}, ${cell.alive ? "alive" : "dead"}, ${cell.visited ? "visited" : "unvisited"}`}
+                onClick={() => onCellClick(x, y)}
+              />
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

@@ -43,12 +43,25 @@ function LoginPage() {
 
   return (
     <main className="admin-login">
-      <form className="admin-card admin-login-card" onSubmit={submit}>
-        <p className="admin-eyebrow">Expand operations</p>
-        <h1>Admin sign in</h1>
-        <label>
-          Password
+      <div className="admin-login-wrap">
+        <Link className="admin-login-brand" to="/" aria-label="Expand game">
+          <span className="brand-mark" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          <strong>expand</strong>
+        </Link>
+        <form className="admin-card admin-login-card" onSubmit={submit}>
+          <div className="admin-login-heading">
+            <p className="admin-eyebrow">Level studio</p>
+            <h1>Welcome back</h1>
+            <p>Sign in to create, preview, and publish game levels.</p>
+          </div>
+          <label htmlFor="admin-password">Password</label>
           <input
+            id="admin-password"
             type="password"
             value={password}
             autoComplete="current-password"
@@ -56,13 +69,27 @@ function LoginPage() {
             autoFocus
             onChange={(event) => setPassword(event.target.value)}
           />
-        </label>
-        {error && <p className="admin-error" role="alert">{error}</p>}
-        <button type="submit" disabled={submitting}>
-          {submitting ? "Signing in…" : "Sign in"}
-        </button>
-        <Link to="/">Back to game</Link>
-      </form>
+          {error && (
+            <p className="admin-error admin-inline-alert" role="alert">
+              <span aria-hidden="true">!</span>
+              {error}
+            </p>
+          )}
+          <button
+            className="button-primary button-wide"
+            type="submit"
+            disabled={submitting}
+          >
+            {submitting ? "Signing in…" : "Sign in"}
+            {!submitting && <span aria-hidden="true">→</span>}
+          </button>
+          <Link className="admin-back-link" to="/">
+            <span aria-hidden="true">←</span>
+            Back to game
+          </Link>
+        </form>
+        <p className="admin-login-footnote">Authorized access only</p>
+      </div>
     </main>
   );
 }
@@ -94,7 +121,13 @@ function RequireAdmin() {
   }, []);
 
   if (state === "checking") {
-    return <p className="admin-route-status">Checking session…</p>;
+    return (
+      <main className="admin-route-status" role="status">
+        <span className="admin-spinner" aria-hidden="true" />
+        <strong>Opening level studio</strong>
+        <span>Checking your session…</span>
+      </main>
+    );
   }
   if (state === "denied") {
     return (
@@ -122,12 +155,23 @@ function AdminFrame() {
   return (
     <div className="admin-shell">
       <header className="admin-header">
-        <div>
-          <p className="admin-eyebrow">Expand operations</p>
-          <Link to="/admin/levels" className="admin-brand">Level admin</Link>
-        </div>
+        <Link to="/admin/levels" className="admin-brand">
+          <span className="brand-mark brand-mark-small" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>
+            <strong>expand</strong>
+            <small>Level studio</small>
+          </span>
+        </Link>
         <nav aria-label="Admin navigation">
-          <Link to="/">View game</Link>
+          <Link className="admin-nav-link" to="/">
+            <span aria-hidden="true">↗</span>
+            View game
+          </Link>
           <button type="button" className="button-secondary" onClick={() => void signOut()}>
             Sign out
           </button>
