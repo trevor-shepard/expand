@@ -78,7 +78,7 @@ startup requires PostgreSQL and fails rather than silently serving fixture conte
 ## Admin security and lifecycle
 
 Admin routes use an expiring, signed, HttpOnly, SameSite=Strict cookie. Mutation requests
-with a foreign `Origin` are rejected. Levels are created as drafts; only published levels
+with a foreign `Origin` are rejected, and password attempts are rate limited. Levels are created as drafts; only published levels
 appear in `GET /api/v1/levels`. Unpublishing removes a level from public play without deleting
 it, while archive is the soft-delete operation. Reordering applies to the complete published
 set in one repository transaction.

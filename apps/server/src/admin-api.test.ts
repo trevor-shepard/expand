@@ -103,6 +103,23 @@ describe("admin API", () => {
     expect(tampered.statusCode).toBe(401);
   });
 
+  it("rate limits repeated failed login attempts", async () => {
+    const responses = [];
+    for (let attempt = 0; attempt < 6; attempt += 1) {
+      responses.push(
+        await app.inject({
+          method: "POST",
+          url: "/api/v1/admin/auth/login",
+          payload: { password: "incorrect-password" },
+        }),
+      );
+    }
+
+    expect(responses.slice(0, 5).every((response) => response.statusCode === 401))
+      .toBe(true);
+    expect(responses[5].statusCode).toBe(429);
+  });
+
   it("creates, updates, publishes, unpublishes, and archives a level", async () => {
     const cookie = await login();
     const created = await app.inject({

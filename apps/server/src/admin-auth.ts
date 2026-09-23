@@ -1,5 +1,6 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import fastifyCookie from "@fastify/cookie";
+import fastifyRateLimit from "@fastify/rate-limit";
 import {
   adminLoginSchema,
   adminSessionResponseSchema,
@@ -88,8 +89,18 @@ export class AdminAuth {
       secret: this.config.sessionSecret,
       hook: "onRequest",
     });
+    await app.register(fastifyRateLimit, {
+      global: false,
+    });
 
-    app.post("/api/v1/admin/auth/login", async (request, reply) => {
+    app.post("/api/v1/admin/auth/login", {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: "1 minute",
+        },
+      },
+    }, async (request, reply) => {
       const { password } = adminLoginSchema.parse(request.body);
       if (!passwordMatches(password, this.config.password)) {
         return reply.code(401).send({
