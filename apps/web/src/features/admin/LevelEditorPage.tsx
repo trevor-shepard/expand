@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { LevelInput } from "@expand/contracts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  AdminApiError,
   createAdminLevel,
   getAdminLevel,
   updateAdminLevel,
@@ -40,6 +41,13 @@ export function LevelEditorPage() {
       })
       .catch((requestError: unknown) => {
         if (active) {
+          if (
+            requestError instanceof AdminApiError &&
+            requestError.status === 401
+          ) {
+            navigate("/admin/login", { replace: true });
+            return;
+          }
           setError(
             requestError instanceof Error
               ? requestError.message
@@ -53,7 +61,7 @@ export function LevelEditorPage() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, navigate]);
 
   const previewInput = useMemo<LevelInput | null>(() => {
     try {
@@ -101,6 +109,10 @@ export function LevelEditorPage() {
       navigate(`/admin/levels/${saved.id}`, { replace: !id });
       setState(levelToEditorState(saved));
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message

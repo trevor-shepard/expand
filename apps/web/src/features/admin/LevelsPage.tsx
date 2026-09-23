@@ -50,6 +50,10 @@ export function LevelsPage() {
       await runLevelAction(level.id, action);
       await load();
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message
@@ -78,6 +82,10 @@ export function LevelsPage() {
       await reorderAdminLevels(publishedIds);
       await load();
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
       setError(
         requestError instanceof Error
           ? requestError.message
