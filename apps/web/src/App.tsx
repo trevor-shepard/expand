@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import type { PlayableLevel } from "@expand/contracts";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import { fetchPublishedLevels } from "./api/levels";
 import { AdminApp } from "./features/admin/AdminApp";
 import { GameScreen } from "./features/game/GameScreen";
 import { WelcomeModal } from "./features/game/WelcomeModal";
+
+const isStaticBuild = import.meta.env.VITE_STATIC_LEVELS === "true";
 
 function PublicGame() {
   const [levels, setLevels] = useState<PlayableLevel[] | null>(null);
@@ -33,7 +35,7 @@ function PublicGame() {
   return (
     <div className="app-shell">
       <header className="app-header">
-        <a className="public-brand" href="/" aria-label="Expand home">
+        <Link className="public-brand" to="/" aria-label="Expand home">
           <span className="brand-mark" aria-hidden="true">
             <i />
             <i />
@@ -44,7 +46,7 @@ function PublicGame() {
             <strong>expand</strong>
             <small>Life, one move at a time</small>
           </span>
-        </a>
+        </Link>
         {!showInstructions && (
           <button
             type="button"
@@ -101,7 +103,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<PublicGame />} />
-      <Route path="/admin/*" element={<AdminApp />} />
+      {!isStaticBuild && <Route path="/admin/*" element={<AdminApp />} />}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
