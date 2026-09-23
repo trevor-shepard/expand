@@ -1,17 +1,13 @@
 import {
-  STARTER_LEVELS,
   levelsListResponseSchema,
   type LevelsListResponse,
 } from "@expand/contracts";
+import type { LevelRepository } from "./repositories/level-repository.js";
 
-/** Phase 1: validated legacy fixture. Phase 2 swaps in Drizzle repository. */
-export function listPublishedLevels(): LevelsListResponse {
-  const levels = [...STARTER_LEVELS].sort((a, b) => {
-    if (a.position !== b.position) return a.position - b.position;
-    return a.slug.localeCompare(b.slug);
-  });
-
-  return levelsListResponseSchema.parse({ levels });
+export async function listPublishedLevels(
+  repository: LevelRepository,
+): Promise<LevelsListResponse> {
+  return levelsListResponseSchema.parse(await repository.listPublished());
 }
 
 export function levelsEtag(levels: LevelsListResponse): string {
