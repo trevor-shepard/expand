@@ -19,7 +19,7 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: github-pages
+      name: ${{ github.ref == 'refs/heads/master' && 'github-pages' || 'github-pages-preview' }}
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
