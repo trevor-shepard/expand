@@ -3,6 +3,7 @@ import { STARTER_LEVELS } from "@expand/contracts";
 import {
   GENERATION_INTERVAL_MS,
   applyCellClick,
+  clicksRemaining,
   createGridFromLevel,
   createLevelRuntime,
   evaluateTerminalState,
@@ -107,6 +108,20 @@ describe("visited / click semantics (legacy characterization)", () => {
     const afterGen = stepGeneration(clicked);
     expect(afterGen.clickCount).toBe(0);
     expect(afterGen.cells[1][1].alive).toBe(true);
+  });
+
+  it("does not spend beyond the click limit", () => {
+    let grid = createGridFromLevel(
+      miniLevel(4, 4, 1, [[0, 0], [3, 3]]),
+    );
+    grid = stepGeneration(grid);
+    grid = applyCellClick(grid, 0, 0);
+    const exhausted = applyCellClick(grid, 3, 3);
+
+    expect(exhausted).toBe(grid);
+    expect(exhausted.clickCount).toBe(1);
+    expect(clicksRemaining(exhausted)).toBe(0);
+    expect(isLost({ ...exhausted, clickCount: 2 })).toBe(true);
   });
 
   it("newly born live cells become visited", () => {

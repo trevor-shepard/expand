@@ -76,11 +76,8 @@ export function useGameSession(
       setLevelIndex(index);
       setGrid(createGridFromLevel(levels[index]));
       setOverlay(null);
-      if (!paused) {
-        startTimer();
-      }
     },
-    [levels, paused, startTimer, stopTimer],
+    [levels, stopTimer],
   );
 
   const resetLevel = useCallback(() => {

@@ -15,6 +15,10 @@ import {
   type LevelRepository,
 } from "./level-repository.js";
 
+// Lifecycle operations share this transaction-scoped lock because positions form
+// one ordered set even when two requests target different level rows.
+const LEVEL_ORDER_LOCK = sql`select pg_advisory_xact_lock(1163416656, 1)`;
+
 function toAdminLevel(row: LevelRow): AdminLevel {
   return adminLevelSchema.parse({
     id: row.id,
@@ -84,6 +88,10 @@ export class PostgresLevelRepository implements LevelRepository {
 
   async close(): Promise<void> {
     await this.client?.end();
+  }
+
+  async checkHealth(): Promise<void> {
+    await this.db.select({ id: levels.id }).from(levels).limit(1);
   }
 
   async listPublished() {
@@ -163,6 +171,7 @@ export class PostgresLevelRepository implements LevelRepository {
 
   async publish(id: string, actor: string): Promise<AdminLevel> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const [current] = await tx
         .select()
         .from(levels)
@@ -204,6 +213,7 @@ export class PostgresLevelRepository implements LevelRepository {
 
   async reorder(levelIds: string[], actor: string): Promise<AdminLevel[]> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const published = await tx
         .select()
         .from(levels)
@@ -253,6 +263,7 @@ export class PostgresLevelRepository implements LevelRepository {
     actor: string,
   ): Promise<AdminLevel> {
     return this.db.transaction(async (tx) => {
+      await tx.execute(LEVEL_ORDER_LOCK);
       const [current] = await tx
         .select()
         .from(levels)
@@ -260,6 +271,9 @@ export class PostgresLevelRepository implements LevelRepository {
         .for("update");
       if (!current) {
         throw new RepositoryError("NOT_FOUND", `Level ${id} was not found`);
+      }
+      if (status === "draft" && current.status !== "published") {
+        return toAdminLevel(current);
       }
       if (current.status === status) return toAdminLevel(current);
 
